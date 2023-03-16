@@ -16,6 +16,6 @@ exclude = [
 ]
 
 [dependencies]
-dioxus = "0.3.2"
-dioxus-desktop = "0.3.0"
+dioxus = "0.3"
+dioxus-desktop = "0.3"
 tokio = { version = "1", features = ["full"] }

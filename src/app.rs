@@ -1,9 +1,27 @@
+use std::time::Duration;
+
 use dioxus::prelude::*;
 
 pub fn app(cx: Scope) -> Element {
+    let count = use_state(cx, || 0);
+
+    use_future(cx, (), move |_| {
+        let mut count = count.clone();
+        async move {
+            loop {
+                tokio::time::sleep(Duration::from_millis(1000)).await;
+                count += 1;
+            }
+        }
+    });
+
     cx.render(rsx! {
         div {
-            "Hello, gauges!"
+            h1 { "Current count: {count}" }
+            button {
+                onclick: move |_| count.set(0),
+                "Reset the count"
+            }
         }
     })
 }
