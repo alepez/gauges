@@ -20,3 +20,5 @@ dioxus = { git = "https://github.com/DioxusLabs/dioxus" }
 dioxus-desktop = { git = "https://github.com/DioxusLabs/dioxus" }
 dioxus-hot-reload = { git = "https://github.com/DioxusLabs/dioxus" } 
 tokio = { version = "1", features = ["full"] }
+tokio-stream = { version = "*" }
+tokio-util = { version = "*", features = ["codec"] }
