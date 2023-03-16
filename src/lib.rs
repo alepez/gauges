@@ -24,4 +24,4 @@ impl From<String> for GaugeId {
     }
 }
 
-pub use app::app;
+pub use app::*;
