@@ -1,0 +1,19 @@
+[package]
+name = "gauges"
+version = "0.0.1"
+authors = ["Alessandro Pezzato <alessandro.pezzato@gmail.com>"]
+edition = "2021"
+license = "MIT"
+keywords = ["visualization", "drawing"]
+repository = "https://github.com/alepez/gauges"
+homepage = "https://github.com/alepez/gauges"
+readme = "README.md"
+categories = ["visualization"]
+description = "A tool to visualize real time gauges"
+documentation = "https://github.com/alepez/gauges"
+exclude = [
+    ".gitignore",
+]
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
