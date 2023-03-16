@@ -1,3 +1,5 @@
+mod app;
+
 pub struct GaugeProps {
     pub id: GaugeId,
     pub style: GaugeStyle,
@@ -21,3 +23,5 @@ impl From<String> for GaugeId {
         GaugeId(s)
     }
 }
+
+pub use app::app;
