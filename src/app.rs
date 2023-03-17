@@ -17,6 +17,7 @@ pub fn app(cx: Scope<AppProps>) -> Element {
             if let Some(mut receiver) = receiver {
                 while let Some(msg) = receiver.recv().await {
                     value.set(msg);
+                    println!("update value {}", msg);
                 }
             }
         }
