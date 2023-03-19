@@ -1,7 +1,7 @@
 pub mod app;
 pub mod net;
 
-pub struct GaugeProps {
+pub struct GaugeInfo {
     pub id: GaugeId,
     pub style: GaugeStyle,
     pub range: Range,

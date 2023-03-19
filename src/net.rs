@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::net::SocketAddr;
 use std::str::FromStr;
 use tokio::net::{TcpListener, TcpStream};
@@ -28,9 +29,19 @@ async fn handle_incoming_data(socket: TcpStream, sender: Sender) {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Value {
+    None,
     Float(f64),
+}
+
+impl Display for Value {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Value::Float(x) => write!(f, "{}", x),
+            Value::None => write!(f, "-"),
+        }
+    }
 }
 
 #[derive(Clone)]
