@@ -1,8 +1,7 @@
 use gauges::app::{AppProps, launch_app};
-use gauges::net::launch_server;
+use gauges::net::{launch_server, channel};
 use gauges::{GaugeId, GaugeProps, GaugeStyle, Range};
 use std::cell::Cell;
-use tokio::sync::mpsc::unbounded_channel;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         style: GaugeStyle::Bar,
     };
 
-    let (sender, receiver) = unbounded_channel::<f64>();
+    let (sender, receiver) = channel();
 
     launch_server(sender.clone());
 

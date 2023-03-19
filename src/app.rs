@@ -3,6 +3,8 @@ use std::cell::Cell;
 
 use dioxus::prelude::*;
 
+use crate::net::{Receiver, Sender, Value};
+
 pub fn launch_app(props: AppProps) {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
     let config = DesktopConfig::new().with_window(window);
@@ -10,8 +12,8 @@ pub fn launch_app(props: AppProps) {
 }
 
 pub struct AppProps {
-    pub sender: Cell<Option<tokio::sync::mpsc::UnboundedSender<f64>>>,
-    pub receiver: Cell<Option<tokio::sync::mpsc::UnboundedReceiver<f64>>>,
+    pub sender: Cell<Option<Sender>>,
+    pub receiver: Cell<Option<Receiver>>,
 }
 
 fn app(cx: Scope<AppProps>) -> Element {
@@ -23,8 +25,12 @@ fn app(cx: Scope<AppProps>) -> Element {
         async move {
             if let Some(mut receiver) = receiver {
                 while let Some(msg) = receiver.recv().await {
-                    value.set(msg);
-                    println!("update value {}", msg);
+                    match msg {
+                        Value::Float(x) => {
+                            value.set(x);
+                            println!("update value {:?}", msg);
+                        }
+                    }
                 }
             }
         }
