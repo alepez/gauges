@@ -19,8 +19,8 @@ pub struct AppProps {
 }
 
 fn app(cx: Scope) -> Element {
-    let value = use_state(&cx, || Value::None);
-    let started = use_state(&cx, || false);
+    let value = use_state(cx, || Value::None);
+    let started = use_state(cx, || false);
 
     let (sender, mut receiver) = channel();
 
@@ -28,7 +28,7 @@ fn app(cx: Scope) -> Element {
         started.set(true);
         cx.spawn(async move {
             println!("Launch server");
-            let _ = launch_server(sender.clone()).await;
+            launch_server(sender.clone()).await;
         });
     }
 
@@ -46,7 +46,7 @@ fn app(cx: Scope) -> Element {
         div {
             gauge::gauge {
                 radius: 50.,
-                value: value.get().clone()
+                value: *value.get()
             }
         }
     })

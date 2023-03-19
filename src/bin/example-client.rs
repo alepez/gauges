@@ -18,7 +18,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         x += step;
         let s = format!("{}\n", x);
-        if stream.write(&s.as_bytes()).await.is_err() {
+        if stream.write(s.as_bytes()).await.is_err() {
             break;
         }
         sleep(Duration::from_millis(100)).await;

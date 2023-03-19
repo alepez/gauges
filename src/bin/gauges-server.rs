@@ -1,7 +1,7 @@
-use gauges::app::{launch_app, AppProps};
-use gauges::net::{channel, launch_server};
+use gauges::app::{launch_app};
+
 use gauges::{GaugeId, GaugeInfo, GaugeStyle, Range};
-use std::cell::Cell;
+
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;
