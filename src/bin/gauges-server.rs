@@ -1,5 +1,5 @@
-use gauges::app::{AppProps, launch_app};
-use gauges::net::{launch_server, channel};
+use gauges::app::{launch_app, AppProps};
+use gauges::net::{channel, launch_server};
 use gauges::{GaugeId, GaugeInfo, GaugeStyle, Range};
 use std::cell::Cell;
 

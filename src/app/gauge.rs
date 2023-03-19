@@ -1,3 +1,5 @@
+use std::f64::consts::PI;
+
 use dioxus::prelude::*;
 
 use crate::net::Value;
@@ -5,29 +7,30 @@ use crate::net::Value;
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
     value: Value,
+    radius: f64,
 }
 
-fn arc_commands() -> String {
-    let radius = 100;
-
-    let begin_x = 50;
-    let begin_y = 150;
+fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -> String {
+    let (begin_x, begin_y) = polar_to_cartesian(x, y, radius, end_angle);
+    let (end_x, end_y) = polar_to_cartesian(x, y, radius, begin_angle);
     let rx = radius;
     let ry = radius;
     let angle = 0;
-    let larg_arc_flag = 1;
+    let large_arc_flag = if end_angle - begin_angle <= PI { 0 } else { 1 };
     let sweep_flag = 0;
-    let end_x = 150;
-    let end_y = 50;
 
     format!(
-        "M {begin_x} {begin_y} A {rx} {ry} {angle} {larg_arc_flag} {sweep_flag} {end_x} {end_y}"
+        "M {begin_x} {begin_y} A {rx} {ry} {angle} {large_arc_flag} {sweep_flag} {end_x} {end_y}"
     )
 }
 
 pub fn gauge(cx: Scope<GaugeProps>) -> Element {
-    let commands = arc_commands();
+    let radius = cx.props.radius;
+    let width = radius * 3.;
+    let center_x = width / 2.;
+    let center_y = width / 2.;
     let text = cx.props.value.to_string();
+    let commands = arc_commands(center_x, center_y, radius, 0., 4.71);
 
     cx.render(rsx! {
         div {
@@ -46,4 +49,11 @@ pub fn gauge(cx: Scope<GaugeProps>) -> Element {
             }
         }
     })
+}
+
+fn polar_to_cartesian(center_x: f64, center_y: f64, radius: f64, angle_rad: f64) -> (f64, f64) {
+    (
+        center_x + radius * angle_rad.cos(),
+        center_y + radius * angle_rad.sin(),
+    )
 }

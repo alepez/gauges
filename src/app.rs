@@ -37,6 +37,7 @@ fn app(cx: Scope<AppProps>) -> Element {
     cx.render(rsx! {
         div {
             gauge::gauge {
+                radius: 50.,
                 value: value.get().clone()
             }
         }
