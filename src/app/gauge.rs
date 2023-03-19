@@ -39,6 +39,8 @@ fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
 
     let value = value.unwrap();
 
+    let angle_offset_rad = -PI / 2.0;
+
     let min_value = 0.0; // TODO
     let max_value = 100.0; // TODO
 
@@ -51,8 +53,8 @@ fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
     let center_x = width / 2.;
     let center_y = width / 2.;
     let text = cx.props.value.to_string();
-    let begin_angle = 0.0;
-    let end_angle = norm_value * 2.0 * PI;
+    let begin_angle = 0.0 + angle_offset_rad;
+    let end_angle = (norm_value * 2.0 * PI) + angle_offset_rad;
     let commands = arc_commands(center_x, center_y, radius, begin_angle, end_angle);
 
     cx.render(rsx! {
