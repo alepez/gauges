@@ -32,12 +32,28 @@ pub fn gauge(cx: Scope<GaugeProps>) -> Element {
 }
 
 fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
+    let value = match cx.props.value {
+        Value::None => None,
+        Value::Float(x) => Some(x),
+    };
+
+    let value = value.unwrap();
+
+    let min_value = 0.0; // TODO
+    let max_value = 100.0; // TODO
+
+    let clamped = value.clamp(min_value, max_value);
+    let range_size = max_value - min_value;
+    let norm_value = (clamped / range_size) - min_value;
+
     let radius = cx.props.radius;
     let width = radius * 3.;
     let center_x = width / 2.;
     let center_y = width / 2.;
     let text = cx.props.value.to_string();
-    let commands = arc_commands(center_x, center_y, radius, 0., 4.71);
+    let begin_angle = 0.0;
+    let end_angle = norm_value * 2.0 * PI;
+    let commands = arc_commands(center_x, center_y, radius, begin_angle, end_angle);
 
     cx.render(rsx! {
         div {
