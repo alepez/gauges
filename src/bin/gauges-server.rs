@@ -1,9 +1,8 @@
-use dioxus_desktop::Config as DesktopConfig;
-use gauges::app::{app, AppProps};
+use gauges::app::{AppProps, launch_app};
 use gauges::net::launch_server;
 use gauges::{GaugeId, GaugeProps, GaugeStyle, Range};
 use std::cell::Cell;
-use tokio::sync::mpsc::{unbounded_channel, UnboundedSender};
+use tokio::sync::mpsc::unbounded_channel;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -28,10 +27,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     launch_app(props);
 
     Ok(())
-}
-
-fn launch_app(props: AppProps) {
-    let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
-    let config = DesktopConfig::new().with_window(window);
-    dioxus_desktop::launch_with_props(app, props, config);
 }
