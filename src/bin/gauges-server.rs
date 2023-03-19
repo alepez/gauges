@@ -1,13 +1,9 @@
 use dioxus_desktop::Config as DesktopConfig;
-use gauges::{app, AppProps};
+use gauges::app::{app, AppProps};
+use gauges::net::launch_server;
 use gauges::{GaugeId, GaugeProps, GaugeStyle, Range};
 use std::cell::Cell;
-use std::net::SocketAddr;
-use std::str::FromStr;
-use tokio::net::TcpListener;
-use tokio::sync::mpsc::unbounded_channel;
-use tokio_stream::StreamExt;
-use tokio_util::codec::{Framed, LinesCodec};
+use tokio::sync::mpsc::{unbounded_channel, UnboundedSender};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -21,33 +17,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let (sender, receiver) = unbounded_channel::<f64>();
-    let other = sender.clone();
 
-    tokio::spawn(async move {
-        let bind = SocketAddr::from_str("127.0.0.1:9999").unwrap();
-        let listener = TcpListener::bind(bind).await.unwrap();
-
-        loop {
-            let (socket, _) = listener.accept().await.unwrap();
-            println!("Connected");
-            let mut server = Framed::new(socket, LinesCodec::new_with_max_length(1024));
-            while let Some(Ok(line)) = server.next().await {
-                let parsed: Option<f64> = line.parse().ok();
-                if let Some(x) = parsed {
-                    other.send(x).unwrap();
-                }
-            }
-        }
-    });
+    launch_server(sender.clone());
 
     let props = AppProps {
         sender: Cell::new(Some(sender)),
         receiver: Cell::new(Some(receiver)),
     };
 
+    launch_app(props);
+
+    Ok(())
+}
+
+fn launch_app(props: AppProps) {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
     let config = DesktopConfig::new().with_window(window);
     dioxus_desktop::launch_with_props(app, props, config);
-
-    Ok(())
 }

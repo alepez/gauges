@@ -1,4 +1,5 @@
-mod app;
+pub mod app;
+pub mod net;
 
 pub struct GaugeProps {
     pub id: GaugeId,
@@ -23,5 +24,3 @@ impl From<String> for GaugeId {
         GaugeId(s)
     }
 }
-
-pub use app::*;
