@@ -15,6 +15,9 @@ exclude = [
     ".gitignore",
 ]
 
+[[bin]]
+name = "gauges-server"
+
 [dependencies]
 dioxus = { git = "https://github.com/DioxusLabs/dioxus" }
 dioxus-desktop = { git = "https://github.com/DioxusLabs/dioxus" }

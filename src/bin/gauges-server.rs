@@ -45,7 +45,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         receiver: Cell::new(Some(receiver)),
     };
 
-    dioxus_desktop::launch_with_props(app, props, DesktopConfig::default());
+    let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
+    let config = DesktopConfig::new().with_window(window);
+    dioxus_desktop::launch_with_props(app, props, config);
 
     Ok(())
 }
