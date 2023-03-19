@@ -6,16 +6,14 @@ use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed, LinesCodec};
 
-pub fn launch_server(sender: Sender) {
-    tokio::spawn(async move {
-        let bind = SocketAddr::from_str("127.0.0.1:9999").unwrap();
-        let listener = TcpListener::bind(bind).await.unwrap();
+pub async fn launch_server(sender: Sender) {
+    let bind = SocketAddr::from_str("127.0.0.1:9999").unwrap();
+    let listener = TcpListener::bind(bind).await.unwrap();
 
-        loop {
-            let (socket, _) = listener.accept().await.unwrap();
-            handle_incoming_data(socket, sender.clone()).await;
-        }
-    });
+    loop {
+        let (socket, _) = listener.accept().await.unwrap();
+        handle_incoming_data(socket, sender.clone()).await;
+    }
 }
 
 async fn handle_incoming_data(socket: TcpStream, sender: Sender) {

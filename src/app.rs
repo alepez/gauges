@@ -5,12 +5,12 @@ use std::cell::Cell;
 
 use dioxus::prelude::*;
 
-use crate::net::{Receiver, Sender, Value};
+use crate::net::{channel, launch_server, Receiver, Sender, Value};
 
-pub fn launch_app(props: AppProps) {
+pub fn launch_app() {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
     let config = DesktopConfig::new().with_window(window);
-    dioxus_desktop::launch_with_props(app, props, config);
+    dioxus_desktop::launch_cfg(app, config);
 }
 
 pub struct AppProps {
@@ -18,18 +18,26 @@ pub struct AppProps {
     pub receiver: Cell<Option<Receiver>>,
 }
 
-fn app(cx: Scope<AppProps>) -> Element {
+fn app(cx: Scope) -> Element {
     let value = use_state(&cx, || Value::None);
-    let receiver = cx.props.receiver.take();
+    let started = use_state(&cx, || false);
+
+    let (sender, mut receiver) = channel();
+
+    if !started {
+        started.set(true);
+        cx.spawn(async move {
+            println!("Launch server");
+            let _ = launch_server(sender.clone()).await;
+        });
+    }
 
     let _ = use_coroutine(cx, |_: UnboundedReceiver<()>| {
         to_owned![value];
         async move {
-            if let Some(mut receiver) = receiver {
-                while let Some(x) = receiver.recv().await {
-                    value.set(x);
-                    println!("update value {:?}", x);
-                }
+            while let Some(x) = receiver.recv().await {
+                value.set(x);
+                println!("update value {:?}", x);
             }
         }
     });
