@@ -25,7 +25,7 @@ pub fn app(cx: Scope<AppProps>) -> Element {
 
     cx.render(rsx! {
         div {
-            h1 { "Value: {value}" }
+            div { "{value}" }
         }
     })
 }
