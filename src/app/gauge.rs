@@ -25,6 +25,13 @@ fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -
 }
 
 pub fn gauge(cx: Scope<GaugeProps>) -> Element {
+    match cx.props.value {
+        Value::None => gauge_none(cx),
+        Value::Float(_) => gauge_arc(cx),
+    }
+}
+
+fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
     let radius = cx.props.radius;
     let width = radius * 3.;
     let center_x = width / 2.;
@@ -47,6 +54,15 @@ pub fn gauge(cx: Scope<GaugeProps>) -> Element {
                     }
                 }
             }
+        }
+    })
+}
+
+fn gauge_none(cx: Scope<GaugeProps>) -> Element {
+    let text = cx.props.value.to_string();
+    cx.render(rsx! {
+        div {
+            div { "{text}" }
         }
     })
 }
