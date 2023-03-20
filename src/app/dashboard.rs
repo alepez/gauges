@@ -1,7 +1,7 @@
-use std::cell::Cell;
+
 
 use crate::app::gauge;
-use crate::net::{channel, launch_server, Receiver, Sender, Value};
+use crate::net::{Value};
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]

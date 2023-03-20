@@ -2,11 +2,11 @@ mod dashboard;
 mod gauge;
 
 use dioxus_desktop::Config as DesktopConfig;
-use std::cell::Cell;
+
 
 use dioxus::prelude::*;
 
-use crate::net::{channel, launch_server, Receiver, Sender, Value};
+use crate::net::{channel, launch_server, Value};
 
 pub fn launch_app() {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
