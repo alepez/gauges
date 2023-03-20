@@ -1,3 +1,4 @@
+mod dashboard;
 mod gauge;
 
 use dioxus_desktop::Config as DesktopConfig;
@@ -13,11 +14,6 @@ pub fn launch_app() {
     dioxus_desktop::launch_cfg(app, config);
 }
 
-pub struct AppProps {
-    pub sender: Cell<Option<Sender>>,
-    pub receiver: Cell<Option<Receiver>>,
-}
-
 fn app(cx: Scope) -> Element {
     let value = use_state(cx, || Value::None);
     let started = use_state(cx, || false);
@@ -27,7 +23,6 @@ fn app(cx: Scope) -> Element {
     if !started {
         started.set(true);
         cx.spawn(async move {
-            println!("Launch server");
             launch_server(sender.clone()).await;
         });
     }
@@ -37,17 +32,13 @@ fn app(cx: Scope) -> Element {
         async move {
             while let Some(x) = receiver.recv().await {
                 value.set(x);
-                println!("update value {:?}", x);
             }
         }
     });
 
     cx.render(rsx! {
-        div {
-            gauge::gauge {
-                radius: 50.,
-                value: *value.get()
-            }
+        dashboard::dashboard {
+            value: *value.get()
         }
     })
 }
