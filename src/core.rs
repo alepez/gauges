@@ -17,23 +17,23 @@ pub struct Record {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct NamedRecord {
     pub record: Record,
-    pub id: Id,
+    pub id: SignalId,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize, Hash)]
-pub enum Id {
+pub enum SignalId {
     Num(u32),
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Signal {
-    pub id: Id,
+    pub id: SignalId,
     pub current_record: Option<Record>,
 }
 
 #[derive(Default)]
 pub struct Signals {
-    items: HashMap<Id, Signal>,
+    items: HashMap<SignalId, Signal>,
 }
 
 impl Signals {
@@ -48,7 +48,7 @@ impl Signals {
             });
     }
 
-    pub fn get(&self, id: &Id) -> Option<&Signal> {
+    pub fn get(&self, id: &SignalId) -> Option<&Signal> {
         self.items.get(id)
     }
 }

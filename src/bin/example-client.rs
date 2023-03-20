@@ -1,4 +1,4 @@
-use gauges::core::{Id, NamedRecord, Record, Value};
+use gauges::core::{SignalId, NamedRecord, Record, Value};
 use std::collections::HashMap;
 use std::time::Duration;
 use tokio::io::AsyncWriteExt;
@@ -65,7 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         for (&id, generator) in &mut generators {
             let record = generator.next();
             let record = NamedRecord {
-                id: Id::Num(id),
+                id: SignalId::Num(id),
                 record,
             };
             let mut serialized = serde_json::to_vec(&record).unwrap();

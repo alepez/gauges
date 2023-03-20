@@ -3,17 +3,23 @@ mod gauge;
 
 use crate::core::{Signals, Value};
 use crate::net::{channel, launch_server};
+use crate::DashboardConfig;
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
 use std::cell::RefCell;
 
-pub fn launch_app() {
-    let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
-    let config = DesktopConfig::new().with_window(window);
-    dioxus_desktop::launch_cfg(app, config);
+struct AppProps {
+    dashboard: DashboardConfig,
 }
 
-fn app(cx: Scope) -> Element {
+pub fn launch_app(dashboard: DashboardConfig) {
+    let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
+    let config = DesktopConfig::new().with_window(window);
+    let props = AppProps { dashboard };
+    dioxus_desktop::launch_with_props(app, props, config);
+}
+
+fn app(cx: Scope<AppProps>) -> Element {
     let signals = use_state(cx, || RefCell::new(Signals::default()));
     let started = use_state(cx, || false);
 
@@ -43,7 +49,7 @@ fn app(cx: Scope) -> Element {
 
     // TODO
     let signals = signals.get().borrow();
-    let signal = signals.get(&crate::core::Id::Num(1));
+    let signal = signals.get(&crate::core::SignalId::Num(1));
     let value = signal
         .and_then(|signal| signal.current_record.as_ref())
         .map(|r| r.value.clone())
@@ -51,6 +57,7 @@ fn app(cx: Scope) -> Element {
 
     cx.render(rsx! {
         dashboard::dashboard {
+            config: cx.props.dashboard.clone(),
             value: value,
         }
     })
