@@ -15,12 +15,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         GaugeInfo {
             id: SignalId::Num(5),
             style: GaugeStyle::Circle,
-            range: Range { min: 0, max: 100 },
+            range: Range { min: 0, max: 360 },
         },
         GaugeInfo {
             id: SignalId::Num(100),
             style: GaugeStyle::Circle,
-            range: Range { min: 0, max: 100 },
+            range: Range { min: 0, max: 1000 },
         },
         GaugeInfo {
             id: SignalId::Num(99),

@@ -31,7 +31,7 @@ pub struct Signal {
     pub current_record: Option<Record>,
 }
 
-#[derive(Default)]
+#[derive(Default, PartialEq, Clone)]
 pub struct Signals {
     items: HashMap<SignalId, Signal>,
 }

@@ -47,18 +47,12 @@ fn app(cx: Scope<AppProps>) -> Element {
         }
     });
 
-    // TODO
-    let signals = signals.get().borrow();
-    let signal = signals.get(&crate::core::SignalId::Num(1));
-    let value = signal
-        .and_then(|signal| signal.current_record.as_ref())
-        .map(|r| r.value.clone())
-        .unwrap_or(Value::None);
+    let signals = signals.get().borrow().clone();
 
     cx.render(rsx! {
         dashboard::dashboard {
             config: cx.props.dashboard.clone(),
-            value: value,
+            signals: signals,
         }
     })
 }
