@@ -1,11 +1,11 @@
 mod dashboard;
 mod gauge;
 
-use std::cell::RefCell;
 use crate::core::{Signals, Value};
 use crate::net::{channel, launch_server};
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
+use std::cell::RefCell;
 
 pub fn launch_app() {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
@@ -32,7 +32,9 @@ fn app(cx: Scope) -> Element {
             while let Some(record) = receiver.recv().await {
                 {
                     let signals = signals.get();
-                    signals.borrow_mut().insert_named_record(record);
+                    if let Ok(mut signals) = signals.try_borrow_mut() {
+                        signals.insert_named_record(record);
+                    }
                 }
                 signals.needs_update();
             }
