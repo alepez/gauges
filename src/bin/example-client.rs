@@ -1,5 +1,4 @@
 use gauges::core::{Id, NamedRecord, Record, Value};
-use std::cell::Cell;
 use std::collections::HashMap;
 use std::time::Duration;
 use tokio::io::AsyncWriteExt;
@@ -31,22 +30,22 @@ impl RecordsGenerator {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut stream = TcpStream::connect("127.0.0.1:9999").await?;
 
-    let mut generators: HashMap<u32, Cell<RecordsGenerator>> = HashMap::new();
+    let mut generators: HashMap<u32, RecordsGenerator> = HashMap::new();
     generators.insert(
         1,
-        Cell::new(RecordsGenerator {
+        RecordsGenerator {
             x: 0.0,
             step: 1.0,
             min: 0.0,
             max: 100.0,
-        }),
+        },
     );
 
     let mut err = false;
 
     while !err {
         for (&id, generator) in &mut generators {
-            let record = generator.get_mut().next();
+            let record = generator.next();
             let record = NamedRecord {
                 id: Id::Num(id),
                 record,
