@@ -3,7 +3,6 @@ mod gauge;
 
 use dioxus_desktop::Config as DesktopConfig;
 
-
 use dioxus::prelude::*;
 
 use crate::net::{channel, launch_server, Value};

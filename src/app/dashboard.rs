@@ -1,7 +1,5 @@
-
-
 use crate::app::gauge;
-use crate::net::{Value};
+use crate::net::Value;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]
