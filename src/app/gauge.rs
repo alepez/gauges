@@ -2,7 +2,7 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::net::Value;
+use crate::core::Value;
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {

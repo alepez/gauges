@@ -1,5 +1,6 @@
 pub mod app;
 pub mod net;
+pub mod core;
 
 pub struct GaugeInfo {
     pub id: GaugeId,

@@ -1,3 +1,4 @@
+use crate::core::Value;
 use std::fmt::Display;
 use std::net::SocketAddr;
 use std::str::FromStr;
@@ -25,12 +26,6 @@ async fn handle_incoming_data(socket: TcpStream, sender: Sender) {
             sender.0.send(x).unwrap();
         }
     }
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum Value {
-    None,
-    Float(f64),
 }
 
 impl Display for Value {
