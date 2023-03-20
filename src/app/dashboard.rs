@@ -1,6 +1,6 @@
 use crate::app::gauge;
 use crate::core::{Signal, Signals, Value};
-use crate::{DashboardConfig};
+use crate::DashboardConfig;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]
@@ -19,16 +19,18 @@ fn extract_value(signal: &Signal) -> Value {
 
 pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
     let signals = cx.props.signals.clone();
-    let values = signals.iter().map(extract_value);
+    let items = &cx.props.config.items;
 
     cx.render(rsx! {
         div {
             class: "dashboard",
             h1 { "Dashboard" },
-            for value in values {
+            for item in items.iter() {
                 gauge::gauge {
                     radius: 50.,
-                    value: value,
+                    // value: extract_value(signal),
+                    value: Value::None,
+                    info: item.signal.clone(),
                 }
             }
         }

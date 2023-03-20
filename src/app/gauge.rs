@@ -2,12 +2,13 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::core::Value;
+use crate::core::{SignalInfo, Value};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
     value: Value,
     radius: f64,
+    info: SignalInfo,
 }
 
 fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -> String {
@@ -25,10 +26,16 @@ fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -
 }
 
 pub fn gauge(cx: Scope<GaugeProps>) -> Element {
-    match cx.props.value {
+    let inner = match cx.props.value {
         Value::None => gauge_none(cx),
         Value::Float(_) => gauge_arc(cx),
-    }
+    };
+
+    cx.render(rsx! {
+        div {
+            inner
+        }
+    })
 }
 
 fn gauge_arc(cx: Scope<GaugeProps>) -> Element {

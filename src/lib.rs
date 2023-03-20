@@ -2,13 +2,15 @@ pub mod app;
 pub mod core;
 pub mod net;
 
-pub use crate::core::SignalId;
+use crate::core::SignalInfo;
+use crate::core::SignalId;
 
 #[derive(PartialEq, Clone)]
 pub struct GaugeInfo {
     pub id: SignalId,
     pub style: GaugeStyle,
     pub range: Range,
+    pub signal: SignalInfo,
 }
 
 #[derive(PartialEq, Clone, Copy)]

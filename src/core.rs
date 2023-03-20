@@ -26,8 +26,14 @@ pub enum SignalId {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct SignalInfo {
+    pub name: Option<String>,
+}
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Signal {
     pub id: SignalId,
+    pub info: SignalInfo,
     pub current_record: Option<Record>,
 }
 
@@ -39,13 +45,9 @@ pub struct Signals {
 impl Signals {
     pub fn insert_named_record(&mut self, record: NamedRecord) {
         let NamedRecord { id, record } = record;
-        self.items
-            .entry(id)
-            .and_modify(|signal| signal.current_record = Some(record))
-            .or_insert(Signal {
-                id,
-                current_record: None,
-            });
+        if let Some(signal) = self.items.get_mut(&id) {
+            signal.current_record = Some(record);
+        }
     }
 
     pub fn get(&self, id: &SignalId) -> Option<&Signal> {
