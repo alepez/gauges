@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,8 +20,35 @@ pub struct NamedRecord {
     pub id: Id,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize, Hash)]
 pub enum Id {
-    Name(String),
     Num(u32),
+}
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct Signal {
+    pub id: Id,
+    pub current_record: Option<Record>,
+}
+
+#[derive(Default)]
+pub struct Signals {
+    items: HashMap<Id, Signal>,
+}
+
+impl Signals {
+    pub fn insert_named_record(&mut self, record: NamedRecord) {
+        let NamedRecord { id, record } = record;
+        self.items
+            .entry(id)
+            .and_modify(|signal| signal.current_record = Some(record))
+            .or_insert(Signal {
+                id,
+                current_record: None,
+            });
+    }
+
+    pub fn get(&self, id: &Id) -> Option<&Signal> {
+        self.items.get(id)
+    }
 }

@@ -1,7 +1,8 @@
 mod dashboard;
 mod gauge;
 
-use crate::core::Value;
+use std::cell::RefCell;
+use crate::core::{Signals, Value};
 use crate::net::{channel, launch_server};
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
@@ -13,7 +14,7 @@ pub fn launch_app() {
 }
 
 fn app(cx: Scope) -> Element {
-    let value = use_state(cx, || Value::None);
+    let signals = use_state(cx, || RefCell::new(Signals::default()));
     let started = use_state(cx, || false);
 
     let (sender, mut receiver) = channel();
@@ -26,17 +27,29 @@ fn app(cx: Scope) -> Element {
     }
 
     let _ = use_coroutine(cx, |_: UnboundedReceiver<()>| {
-        to_owned![value];
+        to_owned![signals];
         async move {
-            while let Some(x) = receiver.recv().await {
-                value.set(x);
+            while let Some(record) = receiver.recv().await {
+                {
+                    let signals = signals.get();
+                    signals.borrow_mut().insert_named_record(record);
+                }
+                signals.needs_update();
             }
         }
     });
 
+    // TODO
+    let signals = signals.get().borrow();
+    let signal = signals.get(&crate::core::Id::Num(1));
+    let value = signal
+        .and_then(|signal| signal.current_record.as_ref())
+        .map(|r| r.value.clone())
+        .unwrap_or(Value::None);
+
     cx.render(rsx! {
         dashboard::dashboard {
-            value: value.get().clone()
+            value: value,
         }
     })
 }

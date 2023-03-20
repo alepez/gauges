@@ -14,7 +14,7 @@ struct RecordsGenerator {
 
 impl RecordsGenerator {
     fn next(&mut self) -> Record {
-        if self.x >= self.max || self.x <= self.min {
+        if self.x > self.max || self.x < self.min {
             self.step = -self.step;
         }
 
