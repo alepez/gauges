@@ -1,12 +1,14 @@
 mod dashboard;
 mod gauge;
 
-use crate::core::{Signals};
+use std::cell::RefCell;
+use std::rc::Rc;
+
+use crate::core::Signals;
 use crate::net::{channel, launch_server};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
-use std::cell::RefCell;
 
 struct AppProps {
     dashboard: DashboardConfig,
@@ -20,7 +22,8 @@ pub fn launch_app(dashboard: DashboardConfig) {
 }
 
 fn app(cx: Scope<AppProps>) -> Element {
-    let signals = use_state(cx, || RefCell::new(Signals::default()));
+    let signals : Signals = cx.props.dashboard.clone().into();
+    let signals = use_state(cx, || Rc::new(RefCell::new(signals)));
     let started = use_state(cx, || false);
 
     let (sender, mut receiver) = channel();
@@ -47,7 +50,7 @@ fn app(cx: Scope<AppProps>) -> Element {
         }
     });
 
-    let signals = signals.get().borrow().clone();
+    let signals = signals.get().clone();
 
     cx.render(rsx! {
         dashboard::dashboard {

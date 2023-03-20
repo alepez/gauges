@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt::Display;
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -25,6 +26,14 @@ pub enum SignalId {
     Num(u32),
 }
 
+impl Display for SignalId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SignalId::Num(n) => write!(f, "{}", n)
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct SignalInfo {
     pub name: Option<String>,
@@ -46,8 +55,20 @@ impl Signals {
     pub fn insert_named_record(&mut self, record: NamedRecord) {
         let NamedRecord { id, record } = record;
         if let Some(signal) = self.items.get_mut(&id) {
+            println!("updated {:?} = {:?}", &id, &record);
             signal.current_record = Some(record);
         }
+    }
+
+    pub fn insert(&mut self, id: SignalId, info: SignalInfo) {
+        self.items.insert(
+            id.clone(),
+            Signal {
+                id: id.clone(),
+                info,
+                current_record: None,
+            },
+        );
     }
 
     pub fn get(&self, id: &SignalId) -> Option<&Signal> {
