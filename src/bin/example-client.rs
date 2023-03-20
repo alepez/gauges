@@ -40,6 +40,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             max: 100.0,
         },
     );
+    generators.insert(
+        5,
+        RecordsGenerator {
+            x: 9.0,
+            step: 5.0,
+            min: 0.0,
+            max: 360.0,
+        },
+    );
+    generators.insert(
+        100,
+        RecordsGenerator {
+            x: 900.0,
+            step: 10.0,
+            min: 0.0,
+            max: 1000.0,
+        },
+    );
 
     let mut err = false;
 
