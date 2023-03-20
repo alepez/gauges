@@ -1,4 +1,4 @@
-use crate::core::Value;
+use crate::core::{Value, Record};
 use std::fmt::Display;
 use std::net::SocketAddr;
 use std::str::FromStr;
@@ -20,10 +20,9 @@ pub async fn launch_server(sender: Sender) {
 async fn handle_incoming_data(socket: TcpStream, sender: Sender) {
     let mut server = Framed::new(socket, LinesCodec::new_with_max_length(1024));
     while let Some(Ok(line)) = server.next().await {
-        let parsed: Option<f64> = line.parse().ok();
-        if let Some(x) = parsed {
-            let x = Value::Float(x);
-            sender.0.send(x).unwrap();
+        let record: Option<Record> = serde_json::from_str(&line).ok();
+        if let Some(record) = record {
+            sender.0.send(record.value).unwrap();
         }
     }
 }
