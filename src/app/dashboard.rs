@@ -8,7 +8,7 @@ pub struct DashboardProps {
 }
 
 pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
-    let value = cx.props.value;
+    let value = cx.props.value.clone();
 
     cx.render(rsx! {
         div {

@@ -36,7 +36,7 @@ fn app(cx: Scope) -> Element {
 
     cx.render(rsx! {
         dashboard::dashboard {
-            value: *value.get()
+            value: value.get().clone()
         }
     })
 }
