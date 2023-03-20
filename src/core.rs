@@ -51,4 +51,8 @@ impl Signals {
     pub fn get(&self, id: &SignalId) -> Option<&Signal> {
         self.items.get(id)
     }
+
+    pub fn iter(&self) -> std::collections::hash_map::Values<'_, SignalId, Signal> {
+        self.items.values()
+    }
 }

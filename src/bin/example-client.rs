@@ -1,4 +1,4 @@
-use gauges::core::{SignalId, NamedRecord, Record, Value};
+use gauges::core::{NamedRecord, Record, SignalId, Value};
 use std::collections::HashMap;
 use std::time::Duration;
 use tokio::io::AsyncWriteExt;

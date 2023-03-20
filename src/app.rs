@@ -1,7 +1,7 @@
 mod dashboard;
 mod gauge;
 
-use crate::core::{Signals, Value};
+use crate::core::{Signals};
 use crate::net::{channel, launch_server};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
