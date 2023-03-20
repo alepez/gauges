@@ -31,8 +31,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut generator = RecordsGenerator { x: 0.0, step: 1.0 };
     loop {
         let x = generator.next();
-        let s = format!("{}\n", x.value);
-        if stream.write(s.as_bytes()).await.is_err() {
+        let mut serialized = serde_json::to_vec(&x).unwrap();
+        serialized.push(b'\n');
+        if stream.write(&serialized).await.is_err() {
             break;
         }
         sleep(Duration::from_millis(100)).await;
