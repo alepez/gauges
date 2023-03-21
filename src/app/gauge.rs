@@ -25,7 +25,7 @@ fn circle_stroke(radius: f64, angle: f64, offset: f64) -> (String, String) {
     (format!("{a},{b}"), format!("{offset}"))
 }
 
-pub fn gauge(cx: Scope<GaugeProps>) -> Element {
+pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner = match cx.props.style {
         GaugeStyle::Arc(style) => ArcGauge(cx, style),
         GaugeStyle::Circle(style) => CircleGauge(cx, style),

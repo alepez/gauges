@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use crate::app::gauge;
+use crate::app::gauge::Gauge;
 use crate::core::{SignalId, Signals, Value};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
@@ -30,7 +30,7 @@ pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
             class: "dashboard",
             h1 { "Dashboard" },
             for item in items.iter() {
-                gauge::gauge {
+                Gauge {
                     value: extract_value(signals, &item.id),
                     signal: item.signal.clone(),
                     style: item.style,
