@@ -15,18 +15,12 @@ pub struct GaugeProps {
     signal: SignalInfo,
 }
 
-fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -> String {
-    let (begin_x, begin_y) = polar_to_cartesian(x, y, radius, end_angle);
-    let (end_x, end_y) = polar_to_cartesian(x, y, radius, begin_angle);
-    let rx = radius;
-    let ry = radius;
-    let angle = 0;
-    let large_arc_flag = if end_angle - begin_angle <= PI { 0 } else { 1 };
-    let sweep_flag = 0;
-
-    format!(
-        "M {begin_x} {begin_y} A {rx} {ry} {angle} {large_arc_flag} {sweep_flag} {end_x} {end_y}"
-    )
+fn circle_stroke(radius: f64, angle: f64) -> (String, String) {
+    let circumference = 2.0 * PI * radius;
+    let offset = circumference / 4.0;
+    let a = angle * radius;
+    let b = circumference - a;
+    (format!("{a},{b}"), format!("{offset}"))
 }
 
 pub fn gauge(cx: Scope<GaugeProps>) -> Element {
@@ -51,9 +45,7 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
         return gauge_none(cx);
     }
 
-    let value = value.unwrap();
-
-    let angle_offset_rad = -PI / 2.0;
+    let value: f64 = value?;
 
     let min_value = cx.props.range.min;
     let max_value = cx.props.range.max;
@@ -68,9 +60,8 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
     let center_x = width / 2.;
     let center_y = width / 2.;
     let text = cx.props.value.to_string();
-    let begin_angle = 0.0 + angle_offset_rad;
-    let end_angle = (norm_value * 2.0 * PI) + angle_offset_rad;
-    let commands = arc_commands(center_x, center_y, radius, begin_angle, end_angle);
+    let angle = norm_value * 2.0 * PI;
+    let (dash_array, dash_offset) = circle_stroke(radius, angle);
 
     cx.render(rsx! {
         div {
@@ -79,11 +70,15 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
                 svg {
                     width: width,
                     height: height,
-                    path {
+                    circle {
                         fill: "none",
                         stroke: "#000000",
                         stroke_width: "20",
-                        d: "{commands}"
+                        cx: center_x,
+                        cy: center_y,
+                        r: radius,
+                        stroke_dasharray: "{dash_array}",
+                        stroke_dashoffset: "{dash_offset}",
                     }
                 }
             }
@@ -98,11 +93,4 @@ fn gauge_none(cx: Scope<GaugeProps>) -> Element {
             div { "{text}" }
         }
     })
-}
-
-fn polar_to_cartesian(center_x: f64, center_y: f64, radius: f64, angle_rad: f64) -> (f64, f64) {
-    (
-        center_x + radius * angle_rad.cos(),
-        center_y + radius * angle_rad.sin(),
-    )
 }
