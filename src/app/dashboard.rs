@@ -20,7 +20,8 @@ fn extract_value(signals: &Signals, id: &SignalId) -> Value {
         .unwrap_or(Value::None)
 }
 
-pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
+#[allow(non_snake_case)]
+pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
     let signals = &cx.props.signals;
     let items = &cx.props.config.items;
 

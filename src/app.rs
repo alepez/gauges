@@ -8,6 +8,7 @@ use crate::net::{channel, launch_server};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
+use dashboard::Dashboard;
 
 struct AppProps {
     dashboard: Rc<DashboardConfig>,
@@ -49,7 +50,7 @@ fn app(cx: Scope<AppProps>) -> Element {
     });
 
     cx.render(rsx! {
-        dashboard::dashboard {
+        Dashboard {
             config: cx.props.dashboard.clone(),
             signals: signals.read().clone(),
         }
