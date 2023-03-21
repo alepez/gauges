@@ -9,10 +9,14 @@ async fn fake_server(sender: Sender) {
     use gauges::core::*;
 
     let records = [
-        (1, Value::None),
-        (5, Value::Float(0.0)),
-        (50, Value::Float(42.0)),
-        (100, Value::Float(100.0)),
+        (101, Value::None),
+        (102, Value::Float(0.0)),
+        (103, Value::Float(42.0)),
+        (104, Value::Float(100.0)),
+        (201, Value::None),
+        (202, Value::Float(0.0)),
+        (203, Value::Float(42.0)),
+        (204, Value::Float(100.0)),
     ]
     .map(|(id, value)| NamedRecord {
         record: Record { value },
@@ -37,7 +41,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let dashboard = DashboardConfig::new(vec![
         GaugeInfo {
-            id: SignalId::Num(1),
+            id: SignalId::Num(101),
             style: GaugeStyle::Arc(arc_style),
             range: Range {
                 min: 0.0,
@@ -48,7 +52,51 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
         },
         GaugeInfo {
-            id: SignalId::Num(5),
+            id: SignalId::Num(102),
+            style: GaugeStyle::Arc(arc_style),
+            range: Range {
+                min: 0.0,
+                max: 100.0,
+            },
+            signal: SignalInfo {
+                name: Some("Two".to_owned()),
+            },
+        },
+        GaugeInfo {
+            id: SignalId::Num(103),
+            style: GaugeStyle::Arc(arc_style),
+            range: Range {
+                min: 0.0,
+                max: 100.0,
+            },
+            signal: SignalInfo {
+                name: Some("Three".to_owned()),
+            },
+        },
+        GaugeInfo {
+            id: SignalId::Num(104),
+            style: GaugeStyle::Arc(arc_style),
+            range: Range {
+                min: 0.0,
+                max: 100.0,
+            },
+            signal: SignalInfo {
+                name: Some("Four".to_owned()),
+            },
+        },
+        GaugeInfo {
+            id: SignalId::Num(201),
+            style: GaugeStyle::Circle(circle_style),
+            range: Range {
+                min: 0.0,
+                max: 100.0,
+            },
+            signal: SignalInfo {
+                name: Some("One".to_owned()),
+            },
+        },
+        GaugeInfo {
+            id: SignalId::Num(202),
             style: GaugeStyle::Circle(circle_style),
             range: Range {
                 min: 0.0,
@@ -59,7 +107,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
         },
         GaugeInfo {
-            id: SignalId::Num(50),
+            id: SignalId::Num(203),
             style: GaugeStyle::Circle(circle_style),
             range: Range {
                 min: 0.0,
@@ -70,7 +118,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
         },
         GaugeInfo {
-            id: SignalId::Num(100),
+            id: SignalId::Num(204),
             style: GaugeStyle::Circle(circle_style),
             range: Range {
                 min: 0.0,
