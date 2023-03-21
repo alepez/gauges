@@ -64,6 +64,7 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
 
     let radius = style.radius;
     let width = radius * 3.;
+    let height = width;
     let center_x = width / 2.;
     let center_y = width / 2.;
     let text = cx.props.value.to_string();
@@ -76,8 +77,8 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
             div { "{text}" }
             div {
                 svg {
-                    width: "300px",
-                    height: "300px",
+                    width: width,
+                    height: height,
                     path {
                         fill: "none",
                         stroke: "#000000",
