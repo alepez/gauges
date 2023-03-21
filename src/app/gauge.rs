@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use std::f64::consts::PI;
 
 use dioxus::prelude::*;
@@ -25,6 +23,7 @@ fn circle_stroke(radius: f64, angle: f64, offset: f64) -> (String, String) {
     (format!("{a},{b}"), format!("{offset}"))
 }
 
+#[allow(non_snake_case)]
 pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner = match cx.props.style {
         GaugeStyle::Arc(style) => ArcGauge(cx, style),
@@ -38,6 +37,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     })
 }
 
+#[allow(non_snake_case)]
 fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
     let value = match cx.props.value {
         Value::None => None,
@@ -98,6 +98,7 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
     })
 }
 
+#[allow(non_snake_case)]
 fn CircleGauge(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
     let style = ArcGaugeStyle {
         radius: style.radius,
@@ -108,6 +109,7 @@ fn CircleGauge(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
     ArcGauge(cx, style)
 }
 
+#[allow(non_snake_case)]
 fn NoneGauge(cx: Scope<GaugeProps>) -> Element {
     let text = cx.props.value.to_string();
     cx.render(rsx! {
@@ -127,6 +129,7 @@ struct ArcProps {
     color: &'static str,
 }
 
+#[allow(non_snake_case)]
 fn Arc(cx: Scope<ArcProps>) -> Element {
     let ArcProps {
         center_x,
