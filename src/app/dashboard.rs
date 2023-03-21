@@ -1,12 +1,14 @@
+use std::rc::Rc;
+
 use crate::app::gauge;
 use crate::core::{SignalId, Signals, Value};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]
-pub struct DashboardProps<'a> {
-    signals: &'a Signals,
-    config: &'a DashboardConfig,
+pub struct DashboardProps {
+    signals: Signals,
+    config: Rc<DashboardConfig>,
 }
 
 fn extract_value(signals: &Signals, id: &SignalId) -> Value {
@@ -18,7 +20,7 @@ fn extract_value(signals: &Signals, id: &SignalId) -> Value {
         .unwrap_or(Value::None)
 }
 
-pub fn dashboard<'a>(cx: Scope<'a, DashboardProps<'a>>) -> Element {
+pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
     let signals = &cx.props.signals;
     let items = &cx.props.config.items;
 
