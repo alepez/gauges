@@ -22,7 +22,7 @@ async fn handle_incoming_data(socket: TcpStream, sender: Sender) {
     while let Some(Ok(line)) = server.next().await {
         let record: Option<NamedRecord> = serde_json::from_str(&line).ok();
         if let Some(record) = record {
-            sender.0.send(record).unwrap();
+            sender.send(record).unwrap();
         }
     }
 }
@@ -44,6 +44,15 @@ pub struct Receiver(UnboundedReceiver<NamedRecord>);
 impl Receiver {
     pub async fn recv(&mut self) -> Option<NamedRecord> {
         self.0.recv().await
+    }
+}
+
+impl Sender {
+    pub fn send(
+        &self,
+        message: NamedRecord,
+    ) -> Result<(), tokio::sync::mpsc::error::SendError<NamedRecord>> {
+        self.0.send(message)
     }
 }
 
