@@ -8,30 +8,17 @@ use gauges::{ArcGaugeStyle, CircleGaugeStyle, DashboardConfig, GaugeInfo, GaugeS
 async fn fake_server(sender: Sender) {
     use gauges::core::*;
 
-    let records = vec![
-        NamedRecord {
-            record: Record { value: Value::None },
-            id: SignalId::Num(1),
-        },
-        NamedRecord {
-            record: Record {
-                value: Value::Float(0.0),
-            },
-            id: SignalId::Num(5),
-        },
-        NamedRecord {
-            record: Record {
-                value: Value::Float(42.0),
-            },
-            id: SignalId::Num(50),
-        },
-        NamedRecord {
-            record: Record {
-                value: Value::Float(42.0),
-            },
-            id: SignalId::Num(100),
-        },
-    ];
+    let records = [
+        (1, Value::None),
+        (5, Value::Float(0.0)),
+        (50, Value::Float(42.0)),
+        (100, Value::Float(100.0)),
+    ]
+    .map(|(id, value)| NamedRecord {
+        record: Record { value },
+        id: SignalId::Num(id),
+    });
+
     for record in records {
         sender.send(record).unwrap();
     }
