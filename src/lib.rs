@@ -20,9 +20,14 @@ pub struct Range {
     pub max: i64,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct CircleGaugeStyle {
+    pub radius: f64,
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum GaugeStyle {
-    Circle,
+    Circle(CircleGaugeStyle),
 }
 
 #[derive(PartialEq, Clone)]

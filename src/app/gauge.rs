@@ -2,13 +2,17 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::core::{SignalInfo, Value};
+use crate::{
+    core::{SignalInfo, Value},
+    CircleGaugeStyle, GaugeStyle, Range,
+};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
     value: Value,
-    radius: f64,
-    info: SignalInfo,
+    style: GaugeStyle,
+    range: Range,
+    signal: SignalInfo,
 }
 
 fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -> String {
@@ -26,9 +30,8 @@ fn arc_commands(x: f64, y: f64, radius: f64, begin_angle: f64, end_angle: f64) -
 }
 
 pub fn gauge(cx: Scope<GaugeProps>) -> Element {
-    let inner = match cx.props.value {
-        Value::None => gauge_none(cx),
-        Value::Float(_) => gauge_arc(cx),
+    let inner = match cx.props.style {
+        GaugeStyle::Circle(style) => gauge_circle(cx, style),
     };
 
     cx.render(rsx! {
@@ -38,11 +41,15 @@ pub fn gauge(cx: Scope<GaugeProps>) -> Element {
     })
 }
 
-fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
+fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
     let value = match cx.props.value {
         Value::None => None,
         Value::Float(x) => Some(x),
     };
+
+    if value.is_none() {
+        return gauge_none(cx);
+    }
 
     let value = value.unwrap();
 
@@ -55,7 +62,7 @@ fn gauge_arc(cx: Scope<GaugeProps>) -> Element {
     let range_size = max_value - min_value;
     let norm_value = (clamped / range_size) - min_value;
 
-    let radius = cx.props.radius;
+    let radius = style.radius;
     let width = radius * 3.;
     let center_x = width / 2.;
     let center_y = width / 2.;
