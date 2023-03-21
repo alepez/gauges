@@ -42,9 +42,7 @@ fn app(cx: Scope<AppProps>) -> Element {
         to_owned![signals];
         async move {
             while let Some(record) = receiver.recv().await {
-                {
-                    signals.write().insert_named_record(record);
-                }
+                signals.write().insert_named_record(record);
                 signals.needs_update();
             }
         }

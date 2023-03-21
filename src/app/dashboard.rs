@@ -31,7 +31,7 @@ pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
             for item in items.iter() {
                 gauge::gauge {
                     radius: 50.,
-                    value: extract_value(&signals, &item.id),
+                    value: extract_value(signals, &item.id),
                     info: item.signal.clone(),
                 }
             }

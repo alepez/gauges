@@ -61,9 +61,9 @@ impl Signals {
 
     pub fn insert(&mut self, id: SignalId, info: SignalInfo) {
         self.items.insert(
-            id.clone(),
+            id,
             Signal {
-                id: id.clone(),
+                id,
                 info,
                 current_record: None,
             },

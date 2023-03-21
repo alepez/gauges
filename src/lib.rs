@@ -2,9 +2,9 @@ pub mod app;
 pub mod core;
 pub mod net;
 
-use crate::core::Signals;
 use crate::core::SignalId;
 use crate::core::SignalInfo;
+use crate::core::Signals;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct GaugeInfo {
