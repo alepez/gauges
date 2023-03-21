@@ -29,7 +29,7 @@ pub enum SignalId {
 impl Display for SignalId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SignalId::Num(n) => write!(f, "{}", n)
+            SignalId::Num(n) => write!(f, "{}", n),
         }
     }
 }
@@ -46,7 +46,7 @@ pub struct Signal {
     pub current_record: Option<Record>,
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Debug, Default, PartialEq, Clone)]
 pub struct Signals {
     items: HashMap<SignalId, Signal>,
 }
@@ -55,7 +55,6 @@ impl Signals {
     pub fn insert_named_record(&mut self, record: NamedRecord) {
         let NamedRecord { id, record } = record;
         if let Some(signal) = self.items.get_mut(&id) {
-            println!("updated {:?} = {:?}", &id, &record);
             signal.current_record = Some(record);
         }
     }

@@ -40,9 +40,12 @@ impl Into<Signals> for DashboardConfig {
     fn into(self) -> Signals {
         let mut signals = Signals::default();
         for item in self.items.into_iter() {
-            signals.insert(item.id, SignalInfo{
-                name: Some(item.id.to_string())
-            });
+            signals.insert(
+                item.id,
+                SignalInfo {
+                    name: Some(item.id.to_string()),
+                },
+            );
         }
         signals
     }

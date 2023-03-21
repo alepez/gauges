@@ -1,15 +1,12 @@
-use std::cell::RefCell;
-use std::rc::Rc;
-
 use crate::app::gauge;
 use crate::core::{SignalId, Signals, Value};
 use crate::DashboardConfig;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]
-pub struct DashboardProps {
-    signals: Rc<RefCell<Signals>>,
-    config: DashboardConfig,
+pub struct DashboardProps<'a> {
+    signals: &'a Signals,
+    config: &'a DashboardConfig,
 }
 
 fn extract_value(signals: &Signals, id: &SignalId) -> Value {
@@ -21,12 +18,9 @@ fn extract_value(signals: &Signals, id: &SignalId) -> Value {
         .unwrap_or(Value::None)
 }
 
-pub fn dashboard(cx: Scope<DashboardProps>) -> Element {
-    let signals = cx.props.signals.clone();
-    let signals = signals.borrow();
+pub fn dashboard<'a>(cx: Scope<'a, DashboardProps<'a>>) -> Element {
+    let signals = &cx.props.signals;
     let items = &cx.props.config.items;
-
-    // dbg!(&items);
 
     cx.render(rsx! {
         div {

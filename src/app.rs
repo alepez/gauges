@@ -1,9 +1,6 @@
 mod dashboard;
 mod gauge;
 
-use std::cell::RefCell;
-use std::rc::Rc;
-
 use crate::core::Signals;
 use crate::net::{channel, launch_server};
 use crate::DashboardConfig;
@@ -22,8 +19,11 @@ pub fn launch_app(dashboard: DashboardConfig) {
 }
 
 fn app(cx: Scope<AppProps>) -> Element {
-    let signals : Signals = cx.props.dashboard.clone().into();
-    let signals = use_state(cx, || Rc::new(RefCell::new(signals)));
+    let signals = use_state(cx, || {
+        let signals: Signals = cx.props.dashboard.clone().into();
+        signals
+    });
+
     let started = use_state(cx, || false);
 
     let (sender, mut receiver) = channel();
@@ -40,22 +40,21 @@ fn app(cx: Scope<AppProps>) -> Element {
         async move {
             while let Some(record) = receiver.recv().await {
                 {
-                    let signals = signals.get();
-                    if let Ok(mut signals) = signals.try_borrow_mut() {
+                    signals.modify(|signals| {
+                        let mut signals = signals.clone();
                         signals.insert_named_record(record);
-                    }
+                        signals
+                    });
                 }
                 signals.needs_update();
             }
         }
     });
 
-    let signals = signals.get().clone();
-
     cx.render(rsx! {
         dashboard::dashboard {
-            config: cx.props.dashboard.clone(),
-            signals: signals,
+            config: &cx.props.dashboard,
+            signals: &signals.get(),
         }
     })
 }
