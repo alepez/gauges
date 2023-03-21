@@ -16,8 +16,8 @@ pub struct GaugeInfo {
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Range {
-    pub min: i64,
-    pub max: i64,
+    pub min: f64,
+    pub max: f64,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]

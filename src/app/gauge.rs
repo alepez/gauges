@@ -55,8 +55,8 @@ fn gauge_circle(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
 
     let angle_offset_rad = -PI / 2.0;
 
-    let min_value = 0.0; // TODO
-    let max_value = 100.0; // TODO
+    let min_value = cx.props.range.min;
+    let max_value = cx.props.range.max;
 
     let clamped = value.clamp(min_value, max_value);
     let range_size = max_value - min_value;

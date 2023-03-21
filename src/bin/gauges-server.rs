@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         GaugeInfo {
             id: SignalId::Num(1),
             style: GaugeStyle::Circle(circle_style),
-            range: Range { min: 0, max: 100 },
+            range: Range { min: 0.0, max: 100.0 },
             signal: SignalInfo {
                 name: Some("One".to_owned()),
             },
@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         GaugeInfo {
             id: SignalId::Num(5),
             style: GaugeStyle::Circle(circle_style),
-            range: Range { min: 0, max: 360 },
+            range: Range { min: 0.0, max: 360.0 },
             signal: SignalInfo {
                 name: Some("One".to_owned()),
             },
@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         GaugeInfo {
             id: SignalId::Num(100),
             style: GaugeStyle::Circle(circle_style),
-            range: Range { min: 0, max: 1000 },
+            range: Range { min: 0.0, max: 1000.0 },
             signal: SignalInfo {
                 name: Some("One".to_owned()),
             },
@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         GaugeInfo {
             id: SignalId::Num(99),
             style: GaugeStyle::Circle(circle_style),
-            range: Range { min: 0, max: 100 },
+            range: Range { min: 0.0, max: 100.0 },
             signal: SignalInfo {
                 name: Some("One".to_owned()),
             },
