@@ -65,7 +65,6 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
     let text = cx.props.value.to_string();
 
     let begin_angle = style.begin_angle;
-    dbg!(begin_angle);
 
     let full_width = style.full_width;
     let real_width = norm_value * full_width;
