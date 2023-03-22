@@ -2,7 +2,9 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, Range, SignalInfo, Value, ProtractorGaugeStyle};
+use crate::core::{
+    ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, ProtractorGaugeStyle, Range, SignalInfo, Value,
+};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
@@ -23,9 +25,9 @@ fn circle_stroke(radius: f64, angle: f64, offset: f64) -> (String, String) {
 #[allow(non_snake_case)]
 pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner = match cx.props.style {
-        GaugeStyle::Arc(style) => ArcGauge(cx, style),
-        GaugeStyle::Circle(style) => CircleGauge(cx, style),
-        GaugeStyle::Protractor(style) => ProtractorGauge(cx, style),
+        GaugeStyle::Arc(style) => ExtArcGauge(cx, style.into()),
+        GaugeStyle::Circle(style) => ExtArcGauge(cx, style.into()),
+        GaugeStyle::Protractor(style) => ExtArcGauge(cx, style.into()),
     };
 
     let info = cx.props.signal.name.as_deref().unwrap_or("-");
@@ -63,7 +65,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
 }
 
 #[allow(non_snake_case)]
-fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
+fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let value = match cx.props.value {
         Value::None => None,
         Value::Float(x) => Some(x),
@@ -122,28 +124,6 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
 }
 
 #[allow(non_snake_case)]
-fn CircleGauge(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
-    let style = ArcGaugeStyle {
-        radius: style.radius,
-        begin_angle: 0.0,
-        full_width: 2.0 * PI,
-    };
-
-    ArcGauge(cx, style)
-}
-
-#[allow(non_snake_case)]
-fn ProtractorGauge(cx: Scope<GaugeProps>, style: ProtractorGaugeStyle) -> Element {
-    let style = ArcGaugeStyle {
-        radius: style.radius,
-        begin_angle: 0.0,
-        full_width: 2.0 * PI,
-    };
-
-    ArcGauge(cx, style)
-}
-
-#[allow(non_snake_case)]
 fn NoneGauge(cx: Scope<GaugeProps>) -> Element {
     cx.render(rsx! {
         div {
@@ -186,4 +166,45 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
             stroke_dashoffset: "{dash_offset}",
         }
     })
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+struct ExtArcGaugeStyle {
+    radius: f64,
+    begin_angle: f64,
+    full_width: f64,
+    arrow: bool,
+}
+
+impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
+    fn into(self) -> ExtArcGaugeStyle {
+        ExtArcGaugeStyle {
+            radius: self.radius,
+            begin_angle: self.begin_angle,
+            full_width: self.full_width,
+            arrow: false,
+        }
+    }
+}
+
+impl Into<ExtArcGaugeStyle> for CircleGaugeStyle {
+    fn into(self) -> ExtArcGaugeStyle {
+        ExtArcGaugeStyle {
+            radius: self.radius,
+            begin_angle: 0.0,
+            full_width: 2.0 * PI,
+            arrow: false,
+        }
+    }
+}
+
+impl Into<ExtArcGaugeStyle> for ProtractorGaugeStyle {
+    fn into(self) -> ExtArcGaugeStyle {
+        ExtArcGaugeStyle {
+            radius: self.radius,
+            begin_angle: 0.0,
+            full_width: 2.0 * PI,
+            arrow: true,
+        }
+    }
 }
