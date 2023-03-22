@@ -35,16 +35,11 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     cx.render(rsx! {
         div {
             class: "gauge",
-            position: "relative",
             width: "150px", // TODO
             height: "150px", // TODO
-            display: "inline-block",
             div { 
-                class: "gauge-text",
-                position: "absolute",
+                class: "gauge-value-text",
                 width: "150px", // TODO
-                text_align: "center",
-                vertical_align: "middle",
                 line_height: "150px", // TODO
                 "{text}" 
             }

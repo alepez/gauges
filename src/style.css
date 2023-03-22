@@ -1,0 +1,22 @@
+body {
+  background: #000000;
+  color: #ffffff;
+}
+
+.gauge {
+  position: relative;
+  display: inline-block;
+  background: #333333;
+  margin: 10px;
+}
+
+.gauge-value-text {
+  position: absolute;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.gauge-inner {
+  margin: 0;
+  padding: 0;
+}
