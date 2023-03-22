@@ -223,22 +223,22 @@ struct ExtArcGaugeStyle {
     normalize_policy: NormalizePolicy,
 }
 
-impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
-    fn into(self) -> ExtArcGaugeStyle {
+impl From<ArcGaugeStyle> for ExtArcGaugeStyle {
+    fn from(val: ArcGaugeStyle) -> Self {
         ExtArcGaugeStyle {
-            radius: self.radius,
-            begin_angle: self.begin_angle,
-            full_width: self.full_width,
+            radius: val.radius,
+            begin_angle: val.begin_angle,
+            full_width: val.full_width,
             arrow: ArrowType::NoArrow,
             normalize_policy: NormalizePolicy::Clamp,
         }
     }
 }
 
-impl Into<ExtArcGaugeStyle> for CircleGaugeStyle {
-    fn into(self) -> ExtArcGaugeStyle {
+impl From<CircleGaugeStyle> for ExtArcGaugeStyle {
+    fn from(val: CircleGaugeStyle) -> Self {
         ExtArcGaugeStyle {
-            radius: self.radius,
+            radius: val.radius,
             begin_angle: 0.0,
             full_width: 2.0 * PI,
             arrow: ArrowType::NoArrow,
@@ -247,10 +247,10 @@ impl Into<ExtArcGaugeStyle> for CircleGaugeStyle {
     }
 }
 
-impl Into<ExtArcGaugeStyle> for ProtractorGaugeStyle {
-    fn into(self) -> ExtArcGaugeStyle {
+impl From<ProtractorGaugeStyle> for ExtArcGaugeStyle {
+    fn from(val: ProtractorGaugeStyle) -> Self {
         ExtArcGaugeStyle {
-            radius: self.radius,
+            radius: val.radius,
             begin_angle: 0.0,
             full_width: 2.0 * PI,
             arrow: ArrowType::OnlyArrow,
