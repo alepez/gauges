@@ -5,23 +5,93 @@ use gauges::core::{SignalId, SignalInfo};
 use gauges::net::Sender;
 use gauges::prelude::*;
 
+struct ExampleGauge {
+    value: Value,
+    style: GaugeStyle,
+    min: f64,
+    max: f64,
+    name: &'static str,
+}
+
+const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 50.0 });
+
+const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
+    radius: 50.0,
+    begin_angle: (2.0 * PI) * (3.0 / 8.0),
+    full_width: (2.0 * PI) * (6.0 / 8.0),
+});
+
+const EXAMPLES: [ExampleGauge; 8] = [
+    ExampleGauge {
+        value: Value::None,
+        style: ARC_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Arctognathus murryi",
+    },
+    ExampleGauge {
+        value: Value::Float(0.0),
+        style: ARC_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Brachylophosaurus canadensis",
+    },
+    ExampleGauge {
+        value: Value::Float(50.0),
+        style: ARC_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Coelophysis bauri",
+    },
+    ExampleGauge {
+        value: Value::Float(100.0),
+        style: ARC_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Diplodocus carnegii",
+    },
+    ExampleGauge {
+        value: Value::None,
+        style: CIRCLE_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Edmontosaurus annectens",
+    },
+    ExampleGauge {
+        value: Value::Float(0.0),
+        style: CIRCLE_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Fukuiraptor kitadaniensis",
+    },
+    ExampleGauge {
+        value: Value::Float(50.0),
+        style: CIRCLE_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Guanlong wucaii",
+    },
+    ExampleGauge {
+        value: Value::Float(100.0),
+        style: CIRCLE_STYLE,
+        min: 0.0,
+        max: 100.0,
+        name: "Hesperornis regalis",
+    },
+];
+
 async fn fake_server(sender: Sender) {
     use gauges::core::*;
 
-    let records = [
-        (101, Value::None),
-        (102, Value::Float(0.0)),
-        (103, Value::Float(42.0)),
-        (104, Value::Float(100.0)),
-        (201, Value::None),
-        (202, Value::Float(0.0)),
-        (203, Value::Float(42.0)),
-        (204, Value::Float(100.0)),
-    ]
-    .map(|(id, value)| NamedRecord {
-        record: Record { value },
-        id: SignalId::Num(id),
-    });
+    let records = EXAMPLES
+        .iter()
+        .enumerate()
+        .map(|(id, example)| NamedRecord {
+            record: Record {
+                value: example.value.clone(),
+            },
+            id: SignalId::Num(id as u32),
+        });
 
     for record in records {
         sender.send(record).unwrap();
@@ -29,103 +99,19 @@ async fn fake_server(sender: Sender) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let circle_style = CircleGaugeStyle { radius: 50.0 };
-    let arc_style = ArcGaugeStyle {
-        radius: 50.0,
-        begin_angle: (2.0 * PI) * (3.0 / 8.0),
-        full_width: (2.0 * PI) * (6.0 / 8.0),
-    };
+    let dashboard_items = EXAMPLES.iter().enumerate().map(|(id, example)| GaugeInfo {
+        id: SignalId::Num(id as u32),
+        style: example.style,
+        range: Range {
+            min: example.min,
+            max: example.max,
+        },
+        signal: SignalInfo {
+            name: Some(example.name.to_owned()),
+        },
+    });
 
-    let dashboard = DashboardConfig::new(vec![
-        GaugeInfo {
-            id: SignalId::Num(101),
-            style: GaugeStyle::Arc(arc_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("One".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(102),
-            style: GaugeStyle::Arc(arc_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Two".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(103),
-            style: GaugeStyle::Arc(arc_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Three".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(104),
-            style: GaugeStyle::Arc(arc_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Four".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(201),
-            style: GaugeStyle::Circle(circle_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("One".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(202),
-            style: GaugeStyle::Circle(circle_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Two".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(203),
-            style: GaugeStyle::Circle(circle_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Three".to_owned()),
-            },
-        },
-        GaugeInfo {
-            id: SignalId::Num(204),
-            style: GaugeStyle::Circle(circle_style),
-            range: Range {
-                min: 0.0,
-                max: 100.0,
-            },
-            signal: SignalInfo {
-                name: Some("Four".to_owned()),
-            },
-        },
-    ]);
+    let dashboard = DashboardConfig::new(dashboard_items.collect());
 
     launch_app_with_server(dashboard, &fake_server);
 
