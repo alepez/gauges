@@ -28,15 +28,19 @@ async fn fake_server(sender: Sender) {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn enable_hot_reload() {
     // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;
-    // hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run"));
+    // dioxus_hot_reload::hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run"));
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    enable_hot_reload();
 
     let circle_style = CircleGaugeStyle { radius: 50.0 };
     let arc_style = ArcGaugeStyle {
         radius: 50.0,
-        begin_angle: (2.0 * PI) * (2.0 / 8.0),
-        full_width: (2.0 * PI) * (4.0 / 8.0),
+        begin_angle: (2.0 * PI) * (3.0 / 8.0),
+        full_width: (2.0 * PI) * (6.0 / 8.0),
     };
 
     let dashboard = DashboardConfig::new(vec![
