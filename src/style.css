@@ -13,6 +13,16 @@ body {
   margin: 10px;
 }
 
+.gauge-info-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.gauge-info {
+  flex-grow: 1;
+  text-align: center;
+}
+
 .gauge-value-text-wrapper {
   position: absolute;
   display: flex;
@@ -28,4 +38,7 @@ body {
   position: absolute;
   display: flex;
   align-items: center;
+}
+
+.gauge-inner {
 }

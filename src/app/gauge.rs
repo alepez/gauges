@@ -30,20 +30,30 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
         GaugeStyle::Circle(style) => CircleGauge(cx, style),
     };
 
+    let info = cx.props.signal.name.as_ref().map(|x| x.as_str()).unwrap_or("-");
     let text = cx.props.value.to_string();
 
     cx.render(rsx! {
         div {
             class: "gauge",
             width: "150px", // TODO
-            height: "150px", // TODO
+            height: "180px", // TODO
+            div {
+                class: "gauge-info-wrapper",
+                width: "150px", // TODO
+                height: "30px", // TODO
+                div {
+                    class: "gauge-info",
+                    "{info}"
+                }
+            }
             div {
                 class: "gauge-value-text-wrapper",
-                div { 
+                div {
                     class: "gauge-value-text",
                     width: "150px", // TODO
                     line_height: "150px", // TODO
-                    "{text}" 
+                    "{text}"
                 }
             }
             div {
