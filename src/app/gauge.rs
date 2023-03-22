@@ -99,6 +99,9 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let arrow_width = 0.05;
     let arrow_angle = begin_angle + real_width - (arrow_width / 2.0);
 
+    let show_arrow = arrow == ArrowType::OnlyArrow;
+    let show_real = arrow == ArrowType::NoArrow;
+
     cx.render(rsx! {
         div {
             div {
@@ -112,22 +115,29 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
                         radius: radius,
                         begin_angle: begin_angle,
                         width: full_width,
+                        stroke_width: 20.0,
                     }
-                    Arc {
-                        color: "#00FF00",
-                        center_x: center_x,
-                        center_y: center_y,
-                        radius: radius,
-                        begin_angle: begin_angle,
-                        width: real_width,
+                    if show_real {
+                        rsx!(Arc {
+                            color: "#00FF00",
+                            center_x: center_x,
+                            center_y: center_y,
+                            radius: radius,
+                            begin_angle: begin_angle,
+                            width: real_width,
+                            stroke_width: 20.0,
+                        })
                     }
-                    Arc {
-                        color: "#FFFFFF",
-                        center_x: center_x,
-                        center_y: center_y,
-                        radius: radius,
-                        begin_angle: arrow_angle,
-                        width: arrow_width,
+                    if show_arrow {
+                        rsx!(Arc {
+                            color: "#FFFFFF",
+                            center_x: center_x,
+                            center_y: center_y,
+                            radius: radius,
+                            begin_angle: arrow_angle,
+                            width: arrow_width,
+                            stroke_width: 30.0,
+                        })
                     }
                 }
             }
@@ -151,6 +161,7 @@ struct ArcProps {
     width: f64,
     radius: f64,
     color: &'static str,
+    stroke_width: f64,
 }
 
 #[allow(non_snake_case)]
@@ -162,6 +173,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
         width,
         radius,
         color,
+        stroke_width,
     } = *cx.props;
 
     let (dash_array, dash_offset) = circle_stroke(width, begin_angle);
@@ -170,7 +182,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
         circle {
             fill: "none",
             stroke: "{color}",
-            stroke_width: "20",
+            stroke_width: stroke_width,
             cx: center_x,
             cy: center_y,
             r: radius,
@@ -181,12 +193,18 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
     })
 }
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+enum ArrowType {
+    NoArrow,
+    OnlyArrow,
+}
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 struct ExtArcGaugeStyle {
     radius: f64,
     begin_angle: f64,
     full_width: f64,
-    arrow: bool,
+    arrow: ArrowType,
 }
 
 impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
@@ -195,7 +213,7 @@ impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
             radius: self.radius,
             begin_angle: self.begin_angle,
             full_width: self.full_width,
-            arrow: false,
+            arrow: ArrowType::NoArrow,
         }
     }
 }
@@ -206,7 +224,7 @@ impl Into<ExtArcGaugeStyle> for CircleGaugeStyle {
             radius: self.radius,
             begin_angle: 0.0,
             full_width: 2.0 * PI,
-            arrow: false,
+            arrow: ArrowType::NoArrow,
         }
     }
 }
@@ -217,7 +235,7 @@ impl Into<ExtArcGaugeStyle> for ProtractorGaugeStyle {
             radius: self.radius,
             begin_angle: 0.0,
             full_width: 2.0 * PI,
-            arrow: true,
+            arrow: ArrowType::OnlyArrow,
         }
     }
 }

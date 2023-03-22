@@ -17,8 +17,8 @@ const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 5
 
 const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
     radius: 50.0,
-    begin_angle: (2.0 * PI) * (3.0 / 8.0),
-    full_width: (2.0 * PI) * (6.0 / 8.0),
+    begin_angle: 225.0 / 180.0 * PI,
+    full_width: 270.0 / 180.0 * PI,
 });
 
 const PROTRACTOR_STYLE: GaugeStyle = GaugeStyle::Protractor(ProtractorGaugeStyle { radius: 50.0 });
