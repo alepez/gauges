@@ -14,9 +14,6 @@ documentation = "https://github.com/alepez/gauges"
 exclude = [".gitignore"]
 
 [[bin]]
-name = "example-client"
-
-[[bin]]
 name = "gauges-server"
 
 [dependencies]
