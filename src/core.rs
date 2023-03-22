@@ -106,9 +106,15 @@ pub struct ArcGaugeStyle {
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
+pub struct ProtractorGaugeStyle {
+    pub radius: f64,
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum GaugeStyle {
     Arc(ArcGaugeStyle),
     Circle(CircleGaugeStyle),
+    Protractor(ProtractorGaugeStyle),
 }
 
 #[derive(PartialEq, Clone)]

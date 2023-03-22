@@ -21,6 +21,8 @@ const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
     full_width: (2.0 * PI) * (6.0 / 8.0),
 });
 
+const PROTRACTOR_STYLE: GaugeStyle = GaugeStyle::Protractor(ProtractorGaugeStyle { radius: 50.0 });
+
 const EXAMPLES: [ExampleGauge; 8] = [
     ExampleGauge {
         value: Value::None,
@@ -72,10 +74,10 @@ const EXAMPLES: [ExampleGauge; 8] = [
         name: "Guanlong wucaii",
     },
     ExampleGauge {
-        value: Value::Float(100.0),
-        style: CIRCLE_STYLE,
+        value: Value::Float(90.0),
+        style: PROTRACTOR_STYLE,
         min: 0.0,
-        max: 100.0,
+        max: 360.0,
         name: "Hesperornis regalis",
     },
 ];

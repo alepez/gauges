@@ -2,7 +2,7 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, Range, SignalInfo, Value};
+use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, Range, SignalInfo, Value, ProtractorGaugeStyle};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
@@ -25,6 +25,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner = match cx.props.style {
         GaugeStyle::Arc(style) => ArcGauge(cx, style),
         GaugeStyle::Circle(style) => CircleGauge(cx, style),
+        GaugeStyle::Protractor(style) => ProtractorGauge(cx, style),
     };
 
     let info = cx.props.signal.name.as_deref().unwrap_or("-");
@@ -122,6 +123,17 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
 
 #[allow(non_snake_case)]
 fn CircleGauge(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
+    let style = ArcGaugeStyle {
+        radius: style.radius,
+        begin_angle: 0.0,
+        full_width: 2.0 * PI,
+    };
+
+    ArcGauge(cx, style)
+}
+
+#[allow(non_snake_case)]
+fn ProtractorGauge(cx: Scope<GaugeProps>, style: ProtractorGaugeStyle) -> Element {
     let style = ArcGaugeStyle {
         radius: style.radius,
         begin_angle: 0.0,
