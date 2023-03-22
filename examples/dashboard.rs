@@ -30,7 +30,7 @@ async fn fake_server(sender: Sender) {
 
 fn enable_hot_reload() {
     // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;
-    // dioxus_hot_reload::hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run"));
+    // dioxus_hot_reload::hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run --example dashboard"));
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
