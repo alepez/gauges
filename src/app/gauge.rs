@@ -79,6 +79,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         begin_angle,
         full_width,
         arrow,
+        normalize_policy,
     } = style;
 
     let value: f64 = value?;
@@ -86,8 +87,16 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let min_value = cx.props.range.min;
     let max_value = cx.props.range.max;
 
-    let clamped = value.clamp(min_value, max_value);
-    let norm_value = (clamped / (max_value - min_value)) - min_value;
+    let norm_value = match normalize_policy {
+        NormalizePolicy::Clamp => {
+            let clamped = value.clamp(min_value, max_value);
+            (clamped / (max_value - min_value)) - min_value
+        }
+        NormalizePolicy::Mod => {
+            let z = value.rem_euclid(max_value - min_value);
+            (z - min_value) / (max_value - min_value)
+        }
+    };
 
     let width = radius * 3.;
     let height = width;
@@ -194,6 +203,12 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
+enum NormalizePolicy {
+    Clamp,
+    Mod,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum ArrowType {
     NoArrow,
     OnlyArrow,
@@ -205,6 +220,7 @@ struct ExtArcGaugeStyle {
     begin_angle: f64,
     full_width: f64,
     arrow: ArrowType,
+    normalize_policy: NormalizePolicy,
 }
 
 impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
@@ -214,6 +230,7 @@ impl Into<ExtArcGaugeStyle> for ArcGaugeStyle {
             begin_angle: self.begin_angle,
             full_width: self.full_width,
             arrow: ArrowType::NoArrow,
+            normalize_policy: NormalizePolicy::Clamp,
         }
     }
 }
@@ -225,6 +242,7 @@ impl Into<ExtArcGaugeStyle> for CircleGaugeStyle {
             begin_angle: 0.0,
             full_width: 2.0 * PI,
             arrow: ArrowType::NoArrow,
+            normalize_policy: NormalizePolicy::Clamp,
         }
     }
 }
@@ -236,6 +254,7 @@ impl Into<ExtArcGaugeStyle> for ProtractorGaugeStyle {
             begin_angle: 0.0,
             full_width: 2.0 * PI,
             arrow: ArrowType::OnlyArrow,
+            normalize_policy: NormalizePolicy::Mod,
         }
     }
 }
