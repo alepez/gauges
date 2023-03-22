@@ -2,8 +2,10 @@ use std::f64::consts::PI;
 
 use gauges::app::launch_app;
 
+use gauges::core::{
+    ArcGaugeStyle, CircleGaugeStyle, DashboardConfig, GaugeInfo, GaugeStyle, Range,
+};
 use gauges::core::{SignalId, SignalInfo};
-use gauges::{ArcGaugeStyle, CircleGaugeStyle, DashboardConfig, GaugeInfo, GaugeStyle, Range};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;

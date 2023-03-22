@@ -2,10 +2,7 @@ use std::f64::consts::PI;
 
 use dioxus::prelude::*;
 
-use crate::{
-    core::{SignalInfo, Value},
-    ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, Range,
-};
+use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, Range, SignalInfo, Value};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
@@ -30,7 +27,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
         GaugeStyle::Circle(style) => CircleGauge(cx, style),
     };
 
-    let info = cx.props.signal.name.as_ref().map(|x| x.as_str()).unwrap_or("-");
+    let info = cx.props.signal.name.as_deref().unwrap_or("-");
     let text = cx.props.value.to_string();
 
     cx.render(rsx! {

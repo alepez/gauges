@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use crate::app::gauge::Gauge;
+use crate::core::DashboardConfig;
 use crate::core::{SignalId, Signals, Value};
-use crate::DashboardConfig;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Props)]

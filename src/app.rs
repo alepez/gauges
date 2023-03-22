@@ -3,9 +3,9 @@ mod gauge;
 
 use std::rc::Rc;
 
+use crate::core::DashboardConfig;
 use crate::core::Signals;
 use crate::net::{channel, Sender};
-use crate::DashboardConfig;
 use dashboard::Dashboard;
 use dioxus::prelude::*;
 use dioxus_desktop::Config as DesktopConfig;
@@ -68,7 +68,7 @@ where
 
     // TODO Why this does not work but the other works?
     // let launch_server = &cx.props.launch_server;
-    let launch_server: &'static F = &cx.props.launch_server;
+    let launch_server: &'static F = cx.props.launch_server;
 
     if !started {
         started.set(true);
