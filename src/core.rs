@@ -87,7 +87,7 @@ pub struct GaugeInfo {
     pub signal: SignalInfo,
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
 pub struct Range {
     pub min: f64,
     pub max: f64,
