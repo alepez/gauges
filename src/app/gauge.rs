@@ -14,11 +14,10 @@ pub struct GaugeProps {
     signal: SignalInfo,
 }
 
-fn circle_stroke(radius: f64, angle: f64, offset: f64) -> (String, String) {
-    let circumference = 2.0 * PI * radius;
-    let offset = circumference * 0.25 + offset * radius;
-    let a = angle * radius;
-    let b = circumference - a;
+fn circle_stroke(width: f64, offset: f64) -> (String, String) {
+    let offset = -offset + (PI / 2.0);
+    let a = width;
+    let b = (2.0 * PI) - width;
     (format!("{a},{b}"), format!("{offset}"))
 }
 
@@ -75,25 +74,30 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         return NoneGauge(cx);
     }
 
+    let ExtArcGaugeStyle {
+        radius,
+        begin_angle,
+        full_width,
+        arrow,
+    } = style;
+
     let value: f64 = value?;
 
     let min_value = cx.props.range.min;
     let max_value = cx.props.range.max;
 
     let clamped = value.clamp(min_value, max_value);
-    let range_size = max_value - min_value;
-    let norm_value = (clamped / range_size) - min_value;
+    let norm_value = (clamped / (max_value - min_value)) - min_value;
 
-    let radius = style.radius;
     let width = radius * 3.;
     let height = width;
     let center_x = width / 2.;
     let center_y = width / 2.;
 
-    let begin_angle = style.begin_angle;
-
-    let full_width = style.full_width;
     let real_width = norm_value * full_width;
+
+    let arrow_width = 0.05;
+    let arrow_angle = begin_angle + real_width - (arrow_width / 2.0);
 
     cx.render(rsx! {
         div {
@@ -116,6 +120,14 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
                         radius: radius,
                         begin_angle: begin_angle,
                         width: real_width,
+                    }
+                    Arc {
+                        color: "#FFFFFF",
+                        center_x: center_x,
+                        center_y: center_y,
+                        radius: radius,
+                        begin_angle: arrow_angle,
+                        width: arrow_width,
                     }
                 }
             }
@@ -152,7 +164,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
         color,
     } = *cx.props;
 
-    let (dash_array, dash_offset) = circle_stroke(radius, width, begin_angle);
+    let (dash_array, dash_offset) = circle_stroke(width, begin_angle);
 
     cx.render(rsx! {
         circle {
@@ -162,6 +174,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
             cx: center_x,
             cy: center_y,
             r: radius,
+            path_length: 2.0 * PI,
             stroke_dasharray: "{dash_array}",
             stroke_dashoffset: "{dash_offset}",
         }
