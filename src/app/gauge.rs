@@ -30,9 +30,28 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
         GaugeStyle::Circle(style) => CircleGauge(cx, style),
     };
 
+    let text = cx.props.value.to_string();
+
     cx.render(rsx! {
         div {
-            inner
+            class: "gauge",
+            position: "relative",
+            width: "150px", // TODO
+            height: "150px", // TODO
+            display: "inline-block",
+            div { 
+                class: "gauge-text",
+                position: "absolute",
+                width: "150px", // TODO
+                text_align: "center",
+                vertical_align: "middle",
+                line_height: "150px", // TODO
+                "{text}" 
+            }
+            div {
+                class: "gauge-inner",
+                inner
+            }
         }
     })
 }
@@ -62,7 +81,6 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
     let height = width;
     let center_x = width / 2.;
     let center_y = width / 2.;
-    let text = cx.props.value.to_string();
 
     let begin_angle = style.begin_angle;
 
@@ -71,7 +89,6 @@ fn ArcGauge(cx: Scope<GaugeProps>, style: ArcGaugeStyle) -> Element {
 
     cx.render(rsx! {
         div {
-            div { "{text}" }
             div {
                 svg {
                     width: width,
@@ -111,10 +128,8 @@ fn CircleGauge(cx: Scope<GaugeProps>, style: CircleGaugeStyle) -> Element {
 
 #[allow(non_snake_case)]
 fn NoneGauge(cx: Scope<GaugeProps>) -> Element {
-    let text = cx.props.value.to_string();
     cx.render(rsx! {
         div {
-            div { "{text}" }
         }
     })
 }
