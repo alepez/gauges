@@ -24,7 +24,7 @@ pub fn launch_app(dashboard: DashboardConfig) {
 }
 
 fn custom_head() -> String {
-    "<link rel=\"stylesheet\" href=\"http://localhost:8000/src/style.css\" />".to_owned()
+    r#"<link rel="stylesheet" href="src/style.css" />"#.to_owned()
 }
 
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
