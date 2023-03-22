@@ -35,12 +35,12 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     cx.render(rsx! {
         div {
             class: "gauge",
-            width: "150px", // TODO
-            height: "180px", // TODO
+            // width: "150px", // TODO
+            // height: "180px", // TODO
             div {
                 class: "gauge-info-wrapper",
-                width: "150px", // TODO
-                height: "30px", // TODO
+                // width: "150px", // TODO
+                // height: "30px", // TODO
                 div {
                     class: "gauge-info",
                     "{info}"
@@ -50,8 +50,8 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
                 class: "gauge-value-text-wrapper",
                 div {
                     class: "gauge-value-text",
-                    width: "150px", // TODO
-                    line_height: "150px", // TODO
+                    // width: "150px", // TODO
+                    // line_height: "150px", // TODO
                     "{text}"
                 }
             }

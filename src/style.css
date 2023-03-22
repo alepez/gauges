@@ -11,22 +11,34 @@ body {
   display: inline-block;
   background: #333333;
   margin: 10px;
+  width: 150px;
+  height: 180px;
 }
 
 .gauge-info-wrapper {
-  display: flex;
+  display: block;
   align-items: center;
+  box-sizing: border-box;
+  padding: 5px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 150px;
+  height: 30px;
 }
 
 .gauge-info {
   flex-grow: 1;
   text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .gauge-value-text-wrapper {
   position: absolute;
   display: flex;
   align-items: center;
+  width: 150px;
+  height: 150px;
 }
 
 .gauge-value-text {
