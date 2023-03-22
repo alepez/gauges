@@ -23,8 +23,14 @@ pub fn launch_app(dashboard: DashboardConfig) {
     launch_app_with_server(dashboard, &crate::net::launch_server)
 }
 
+#[cfg(debug_assertions)]
 fn custom_head() -> String {
     r#"<link rel="stylesheet" href="src/style.css" />"#.to_owned()
+}
+
+#[cfg(not(debug_assertions))]
+fn custom_head() -> String {
+    format!(r#"<style>{}</style>"#, include_str!("style.css"))
 }
 
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
