@@ -22,9 +22,9 @@ name = "example-client"
 name = "gauges-server"
 
 [dependencies]
-dioxus = { git = "https://github.com/DioxusLabs/dioxus" }
-dioxus-desktop = { git = "https://github.com/DioxusLabs/dioxus" }
-dioxus-hot-reload = { git = "https://github.com/DioxusLabs/dioxus" } 
+dioxus = { git = "https://github.com/DioxusLabs/dioxus", rev = "46cc07e" }
+dioxus-desktop = { git = "https://github.com/DioxusLabs/dioxus", rev = "46cc07e" }
+dioxus-hot-reload = { git = "https://github.com/DioxusLabs/dioxus", rev = "46cc07e" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }

@@ -618,7 +618,7 @@ dependencies = [
 [[package]]
 name = "dioxus"
 version = "0.3.2"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "dioxus-core",
  "dioxus-core-macro",
@@ -631,7 +631,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core"
 version = "0.3.2"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "bumpalo",
  "bumpslab",
@@ -649,7 +649,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core-macro"
 version = "0.3.0"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "dioxus-rsx",
  "proc-macro2",
@@ -660,7 +660,7 @@ dependencies = [
 [[package]]
 name = "dioxus-desktop"
 version = "0.3.0"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "core-foundation",
  "dioxus-core",
@@ -686,7 +686,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hooks"
 version = "0.3.0"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "dioxus-core",
  "futures-channel",
@@ -696,7 +696,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hot-reload"
 version = "0.1.1"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "chrono",
  "dioxus-core",
@@ -714,7 +714,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html"
 version = "0.3.1"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "async-trait",
  "dioxus-core",
@@ -730,12 +730,12 @@ dependencies = [
 [[package]]
 name = "dioxus-interpreter-js"
 version = "0.3.1"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 
 [[package]]
 name = "dioxus-rsx"
 version = "0.0.3"
-source = "git+https://github.com/DioxusLabs/dioxus#f0c9dadf7718a3258793d2e868bf198ee9700471"
+source = "git+https://github.com/DioxusLabs/dioxus?rev=46cc07e#46cc07e04827f8ea63bd210eaf6b72727441b6bf"
 dependencies = [
  "dioxus-core",
  "internment",
