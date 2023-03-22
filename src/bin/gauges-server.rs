@@ -1,16 +1,9 @@
 use std::f64::consts::PI;
 
 use gauges::app::launch_app;
-
-use gauges::core::{
-    ArcGaugeStyle, CircleGaugeStyle, DashboardConfig, GaugeInfo, GaugeStyle, Range,
-};
-use gauges::core::{SignalId, SignalInfo};
+use gauges::prelude::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;
-    // hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run"));
-
     let circle_style = CircleGaugeStyle { radius: 50.0 };
     let arc_style = ArcGaugeStyle {
         radius: 50.0,

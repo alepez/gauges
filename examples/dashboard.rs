@@ -3,7 +3,7 @@ use std::f64::consts::PI;
 use gauges::app::launch_app_with_server;
 use gauges::core::{SignalId, SignalInfo};
 use gauges::net::Sender;
-use gauges::{ArcGaugeStyle, CircleGaugeStyle, DashboardConfig, GaugeInfo, GaugeStyle, Range};
+use gauges::prelude::*;
 
 async fn fake_server(sender: Sender) {
     use gauges::core::*;
@@ -28,14 +28,7 @@ async fn fake_server(sender: Sender) {
     }
 }
 
-fn enable_hot_reload() {
-    // use dioxus::prelude::dioxus_hot_reload::Config as HotReloadConfig;
-    // dioxus_hot_reload::hot_reload_init!(HotReloadConfig::new().with_rebuild_command("cargo run --example dashboard"));
-}
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    enable_hot_reload();
-
     let circle_style = CircleGaugeStyle { radius: 50.0 };
     let arc_style = ArcGaugeStyle {
         radius: 50.0,
