@@ -3,6 +3,9 @@ body {
   color: #ffffff;
 }
 
+.dashboard {
+}
+
 .gauge {
   position: relative;
   display: inline-block;
@@ -10,13 +13,19 @@ body {
   margin: 10px;
 }
 
-.gauge-value-text {
+.gauge-value-text-wrapper {
   position: absolute;
-  text-align: center;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 
-.gauge-inner {
-  margin: 0;
-  padding: 0;
+.gauge-value-text {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.gauge-inner-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
 }

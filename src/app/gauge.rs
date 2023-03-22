@@ -37,14 +37,17 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
             class: "gauge",
             width: "150px", // TODO
             height: "150px", // TODO
-            div { 
-                class: "gauge-value-text",
-                width: "150px", // TODO
-                line_height: "150px", // TODO
-                "{text}" 
+            div {
+                class: "gauge-value-text-wrapper",
+                div { 
+                    class: "gauge-value-text",
+                    width: "150px", // TODO
+                    line_height: "150px", // TODO
+                    "{text}" 
+                }
             }
             div {
-                class: "gauge-inner",
+                class: "gauge-inner-wrapper",
                 inner
             }
         }
