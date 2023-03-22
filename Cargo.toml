@@ -11,9 +11,7 @@ readme = "README.md"
 categories = ["visualization"]
 description = "A tool to visualize real time gauges"
 documentation = "https://github.com/alepez/gauges"
-exclude = [
-    ".gitignore",
-]
+exclude = [".gitignore"]
 
 [[bin]]
 name = "example-client"
