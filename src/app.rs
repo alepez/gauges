@@ -23,13 +23,21 @@ pub fn launch_app(dashboard: DashboardConfig) {
     launch_app_with_server(dashboard, &crate::net::launch_server)
 }
 
+fn custom_head() -> String {
+    "<link rel=\"stylesheet\" href=\"http://localhost:8000/src/style.css\" />".to_owned()
+}
+
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
 where
     F: Fn(Sender) -> T + 'static,
     T: std::future::Future<Output = ()> + 'static, // TODO Why this needs to be static?
 {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
-    let config = DesktopConfig::new().with_window(window);
+
+    let config = DesktopConfig::new()
+        .with_window(window)
+        .with_custom_head(custom_head());
+
     let dashboard = Rc::new(dashboard);
     let props = AppProps {
         dashboard,
