@@ -22,7 +22,7 @@ enum GaugeStyleId {
 
 #[derive(Serialize, Deserialize)]
 struct GaugeConfig {
-    id: SignalId,
+    id: usize,
     style: GaugeStyleId,
     range: Range,
     signal: SignalInfo,
@@ -31,7 +31,7 @@ struct GaugeConfig {
 impl From<GaugeConfig> for GaugeInfo {
     fn from(value: GaugeConfig) -> Self {
         GaugeInfo {
-            id: value.id,
+            id: SignalId::Num(value.id as u32),
             style: match value.style {
                 GaugeStyleId::Arc => ARC_STYLE,
                 GaugeStyleId::Circle => CIRCLE_STYLE,
@@ -51,51 +51,26 @@ struct ServerConfig {
 impl From<ServerConfig> for DashboardConfig {
     fn from(value: ServerConfig) -> Self {
         DashboardConfig {
-            items: value.gauges.into_iter().map(|x| x.into()).collect()
+            items: value.gauges.into_iter().map(|x| x.into()).collect(),
         }
     }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = ServerConfig {
-        gauges: vec![
-            GaugeConfig {
-                id: SignalId::Num(0),
-                style: GaugeStyleId::Arc,
-                range: Range {
-                    min: -20.0,
-                    max: 40.0,
-                },
-                signal: SignalInfo {
-                    name: Some("Temperature (C°)".to_owned()),
-                },
-            },
-            GaugeConfig {
-                id: SignalId::Num(1),
-                style: GaugeStyleId::Circle,
-                range: Range {
-                    min: 0.0,
-                    max: 100.0,
-                },
-                signal: SignalInfo {
-                    name: Some("Speed (knots)".to_owned()),
-                },
-            },
-            GaugeConfig {
-                id: SignalId::Num(2),
-                style: GaugeStyleId::Protractor,
-                range: Range {
-                    min: 0.0,
-                    max: 360.0,
-                },
-                signal: SignalInfo {
-                    name: Some("Angle (deg)".to_owned()),
-                },
-            },
-        ],
-    };
+    let config = read_config();
 
     launch_app(config.into());
 
     Ok(())
+}
+
+fn read_config() -> ServerConfig {
+    let content = std::fs::read_to_string("gauges.toml").expect("Could not read config");
+    toml::from_str(&content).expect("Could not parse config")
+}
+
+#[allow(dead_code)]
+fn write_config(config: &ServerConfig) {
+    let content = toml::to_string(config).expect("Could encode config to TOML");
+    std::fs::write("gauges.toml", content).expect("Could not write to file!");
 }
