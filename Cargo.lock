@@ -1062,7 +1062,6 @@ version = "0.0.1"
 dependencies = [
  "dioxus",
  "dioxus-desktop",
- "dioxus-hot-reload",
  "serde",
  "serde_json",
  "tokio",
