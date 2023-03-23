@@ -1,32 +1,17 @@
 [[gauges]]
 id = 0
 style = "Arc"
-
-[gauges.range]
-min = -20.0
-max = 40.0
-
-[gauges.signal]
-name = "Temperature (C°)"
+range = { min = -20.0, max = 40.0 }
+signal = { name = "Temperature (C°)" }
 
 [[gauges]]
 id = 1
 style = "Circle"
-
-[gauges.range]
-min = 0.0
-max = 100.0
-
-[gauges.signal]
-name = "Speed (knots)"
+range = { min = 0.0, max = 100.0 }
+signal = { name = "Speed (knots)" }
 
 [[gauges]]
 id = 2
 style = "Protractor"
-
-[gauges.range]
-min = 0.0
-max = 360.0
-
-[gauges.signal]
-name = "Angle (deg)"
+range = { min = 0.0, max = 360.0 }
+signal = { name = "Angle (deg)" }
