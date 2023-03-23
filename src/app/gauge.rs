@@ -87,14 +87,16 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let min_value = cx.props.range.min;
     let max_value = cx.props.range.max;
 
+    let range_width = max_value - min_value;
+
     let norm_value = match normalize_policy {
         NormalizePolicy::Clamp => {
             let clamped = value.clamp(min_value, max_value);
-            (clamped / (max_value - min_value)) - min_value
+            (clamped - min_value) / range_width
         }
         NormalizePolicy::Mod => {
-            let z = value.rem_euclid(max_value - min_value);
-            (z - min_value) / (max_value - min_value)
+            let z = value.rem_euclid(range_width);
+            (z - min_value) / range_width
         }
     };
 
