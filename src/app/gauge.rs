@@ -23,24 +23,37 @@ fn circle_stroke(width: f64, offset: f64) -> (String, String) {
 
 #[allow(non_snake_case)]
 pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
-    let inner = match cx.props.style {
-        GaugeStyle::Arc(style) => ExtArcGauge(cx, style.into()),
-        GaugeStyle::Circle(style) => ExtArcGauge(cx, style.into()),
-        GaugeStyle::Protractor(style) => ExtArcGauge(cx, style.into()),
+    let inner_style: ExtArcGaugeStyle = match cx.props.style {
+        GaugeStyle::Arc(style) => style.into(),
+        GaugeStyle::Circle(style) => style.into(),
+        GaugeStyle::Protractor(style) => style.into(),
     };
+
+    let inner = ExtArcGauge(cx, inner_style);
 
     let info = cx.props.signal.name.as_deref().unwrap_or("-");
     let text = cx.props.value.to_string();
 
+    let inner_width = inner_style.width;
+    let inner_height = inner_style.height;
+
+    let info_width = inner_width;
+    let info_height = 30.0;
+
+    let full_width = inner_width;
+    let full_height = inner_height + info_height;
+
     cx.render(rsx! {
         div {
             class: "gauge",
-            // width: "150px", // TODO
-            // height: "180px", // TODO
+            margin: "10px",
+            width: "{full_width}px",
+            height: "{full_height}px",
             div {
                 class: "gauge-info-wrapper",
-                // width: "150px", // TODO
-                // height: "30px", // TODO
+                padding: "5px",
+                width: "{info_width}px",
+                height: "{info_height}px",
                 div {
                     class: "gauge-info",
                     "{info}"
@@ -48,10 +61,10 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
             }
             div {
                 class: "gauge-value-text-wrapper",
+                width: "{inner_width}px",
+                height: "{inner_height}px",
                 div {
                     class: "gauge-value-text",
-                    // width: "150px", // TODO
-                    // line_height: "150px", // TODO
                     "{text}"
                 }
             }
@@ -80,6 +93,8 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         full_width,
         arrow,
         normalize_policy,
+        width,
+        height,
     } = style;
 
     let value: f64 = value?;
@@ -100,8 +115,6 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         }
     };
 
-    let width = radius * 3.;
-    let height = width;
     let center_x = width / 2.;
     let center_y = width / 2.;
 
@@ -219,6 +232,8 @@ enum ArrowType {
 #[derive(Debug, PartialEq, Clone, Copy)]
 struct ExtArcGaugeStyle {
     radius: f64,
+    width: f64,
+    height: f64,
     begin_angle: f64,
     full_width: f64,
     arrow: ArrowType,
@@ -233,6 +248,8 @@ impl From<ArcGaugeStyle> for ExtArcGaugeStyle {
             full_width: val.full_width,
             arrow: ArrowType::NoArrow,
             normalize_policy: NormalizePolicy::Clamp,
+            width: val.radius * 3.0,
+            height: val.radius * 3.0,
         }
     }
 }
@@ -245,6 +262,8 @@ impl From<CircleGaugeStyle> for ExtArcGaugeStyle {
             full_width: 2.0 * PI,
             arrow: ArrowType::NoArrow,
             normalize_policy: NormalizePolicy::Clamp,
+            width: val.radius * 3.0,
+            height: val.radius * 3.0,
         }
     }
 }
@@ -257,6 +276,8 @@ impl From<ProtractorGaugeStyle> for ExtArcGaugeStyle {
             full_width: 2.0 * PI,
             arrow: ArrowType::OnlyArrow,
             normalize_policy: NormalizePolicy::Mod,
+            width: val.radius * 3.0,
+            height: val.radius * 3.0,
         }
     }
 }

@@ -16,7 +16,7 @@ struct ExampleGauge {
 const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 50.0 });
 
 const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
-    radius: 50.0,
+    radius: 80.0,
     begin_angle: 225.0 / 180.0 * PI,
     full_width: 270.0 / 180.0 * PI,
 });
