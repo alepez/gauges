@@ -8,6 +8,17 @@ use serde::Serialize;
 pub enum Value {
     None,
     Float(f64),
+    Percent(f64),
+}
+
+impl Display for Value {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Value::Float(x) => write!(f, "{:8.3}", x),
+            Value::Percent(x) => write!(f, "{:8.1}%", x),
+            Value::None => write!(f, "-"),
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]

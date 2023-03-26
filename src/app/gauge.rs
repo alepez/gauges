@@ -81,6 +81,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let value = match cx.props.value {
         Value::None => None,
         Value::Float(x) => Some(x),
+        Value::Percent(x) => Some(x),
     };
 
     if value.is_none() {

@@ -1,5 +1,5 @@
-use crate::core::{NamedRecord, Value};
-use std::fmt::Display;
+use crate::core::{NamedRecord};
+
 use std::net::SocketAddr;
 use std::str::FromStr;
 use tokio::net::{TcpListener, TcpStream};
@@ -23,15 +23,6 @@ async fn handle_incoming_data(socket: TcpStream, sender: Sender) {
         let record: Option<NamedRecord> = serde_json::from_str(&line).ok();
         if let Some(record) = record {
             sender.send(record).unwrap();
-        }
-    }
-}
-
-impl Display for Value {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            Value::Float(x) => write!(f, "{}", x),
-            Value::None => write!(f, "-"),
         }
     }
 }
