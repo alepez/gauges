@@ -28,7 +28,6 @@ pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
     cx.render(rsx! {
         div {
             class: "dashboard",
-            h1 { "Dashboard" },
             for item in items.iter() {
                 Gauge {
                     value: extract_value(signals, &item.id),
