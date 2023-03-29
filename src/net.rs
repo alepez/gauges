@@ -8,8 +8,8 @@ use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed, LinesCodec};
 
-pub async fn launch_server(sender: Sender) {
-    let bind = SocketAddr::from_str("127.0.0.1:9999").unwrap();
+pub async fn launch_server(sender: Sender, addr: String) {
+    let bind = SocketAddr::from_str(&addr).unwrap();
     let listener = TcpListener::bind(bind).await.unwrap();
 
     loop {

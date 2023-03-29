@@ -137,13 +137,8 @@ pub enum GaugeStyle {
 
 #[derive(PartialEq, Clone)]
 pub struct DashboardConfig {
+    pub addr: String,
     pub items: Vec<GaugeInfo>,
-}
-
-impl DashboardConfig {
-    pub fn new(items: Vec<GaugeInfo>) -> Self {
-        DashboardConfig { items }
-    }
 }
 
 impl Into<Signals> for DashboardConfig {

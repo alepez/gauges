@@ -49,8 +49,21 @@ impl From<GaugeConfig> for GaugeInfo {
     }
 }
 
+fn default_network() -> NetworkConfig {
+    NetworkConfig {
+        addr: "127.0.0.1:9999".to_string()
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+struct NetworkConfig {
+    addr: String,
+}
+
 #[derive(Serialize, Deserialize)]
 struct ServerConfig {
+    #[serde(default = "default_network")]
+    network: NetworkConfig,
     gauges: Vec<GaugeConfig>,
 }
 
@@ -58,6 +71,7 @@ impl From<ServerConfig> for DashboardConfig {
     fn from(value: ServerConfig) -> Self {
         DashboardConfig {
             items: value.gauges.into_iter().map(|x| x.into()).collect(),
+            addr: value.network.addr,
         }
     }
 }

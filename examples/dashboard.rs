@@ -125,7 +125,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
     },
 ];
 
-async fn fake_server(sender: Sender) {
+async fn fake_server(sender: Sender, _addr: String) {
     use gauges::core::*;
 
     let records = EXAMPLES
@@ -159,7 +159,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
     });
 
-    let dashboard = DashboardConfig::new(dashboard_items.collect());
+    let dashboard = DashboardConfig { items: dashboard_items.collect(), addr: "".to_owned() };
 
     launch_app_with_server(dashboard, &fake_server);
 

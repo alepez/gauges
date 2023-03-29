@@ -1,19 +1,21 @@
-mod dashboard;
-mod gauge;
-
 use std::rc::Rc;
+
+use dioxus::prelude::*;
+use dioxus_desktop::Config as DesktopConfig;
+
+use dashboard::Dashboard;
 
 use crate::core::DashboardConfig;
 use crate::core::Signals;
 use crate::net::{channel, Sender};
-use dashboard::Dashboard;
-use dioxus::prelude::*;
-use dioxus_desktop::Config as DesktopConfig;
+
+mod dashboard;
+mod gauge;
 
 struct AppProps<F, T>
-where
-    F: Fn(Sender) -> T + 'static,
-    T: std::future::Future<Output = ()>,
+    where
+        F: Fn(Sender, String) -> T + 'static,
+        T: std::future::Future<Output=()>,
 {
     dashboard: Rc<DashboardConfig>,
     launch_server: &'static F,
@@ -34,9 +36,9 @@ fn custom_head() -> String {
 }
 
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
-where
-    F: Fn(Sender) -> T + 'static,
-    T: std::future::Future<Output = ()> + 'static, // TODO Why this needs to be static?
+    where
+        F: Fn(Sender, String) -> T + 'static,
+        T: std::future::Future<Output=()> + 'static, // TODO Why this needs to be static?
 {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
 
@@ -53,9 +55,9 @@ where
 }
 
 fn app<F, T>(cx: Scope<AppProps<F, T>>) -> Element
-where
-    F: Fn(Sender) -> T + 'static,
-    T: std::future::Future<Output = ()>,
+    where
+        F: Fn(Sender, String) -> T + 'static,
+        T: std::future::Future<Output=()>,
 {
     let signals = use_ref(cx, || {
         let signals: Signals = cx.props.dashboard.as_ref().clone().into();
@@ -69,11 +71,12 @@ where
     // TODO Why this does not work but the other works?
     // let launch_server = &cx.props.launch_server;
     let launch_server: &'static F = cx.props.launch_server;
+    let addr = cx.props.dashboard.addr.clone();
 
     if !started {
         started.set(true);
         cx.spawn(async move {
-            launch_server(sender.clone()).await;
+            launch_server(sender.clone(), addr).await;
         });
     }
 
