@@ -90,12 +90,18 @@ impl Signals {
     }
 }
 
+#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+pub struct GaugeTextFormat {
+    pub precision: usize,
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct GaugeInfo {
     pub id: SignalId,
     pub style: GaugeStyle,
     pub range: Range,
     pub signal: SignalInfo,
+    pub format: GaugeTextFormat,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]

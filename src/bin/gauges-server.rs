@@ -29,6 +29,7 @@ struct GaugeConfig {
     style: GaugeStyleId,
     range: Range,
     signal: SignalInfo,
+    format: GaugeTextFormat,
 }
 
 impl From<GaugeConfig> for GaugeInfo {
@@ -42,6 +43,7 @@ impl From<GaugeConfig> for GaugeInfo {
             },
             range: value.range,
             signal: value.signal,
+            format: value.format,
         }
     }
 }

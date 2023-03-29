@@ -13,6 +13,7 @@ struct ExampleGauge {
     min: f64,
     max: f64,
     name: &'static str,
+    precision: usize,
 }
 
 const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 50.0 });
@@ -32,6 +33,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Arctognathus murryi",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(0.0),
@@ -39,6 +41,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Brachylophosaurus canadensis",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(50.0),
@@ -46,6 +49,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Coelophysis bauri",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(100.0),
@@ -53,6 +57,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Diplodocus carnegii",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::None,
@@ -60,6 +65,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Edmontosaurus annectens",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(0.0),
@@ -67,6 +73,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Fukuiraptor kitadaniensis",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(50.0),
@@ -74,6 +81,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 100.0,
         name: "Guanlong wucaii",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(90.0),
@@ -81,6 +89,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 360.0,
         name: "Hesperornis regalis",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(180.0),
@@ -88,6 +97,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 360.0,
         name: "Hesperornis regalis",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(0.0),
@@ -95,6 +105,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 360.0,
         name: "Hesperornis regalis",
+        precision: 3,
     },
     ExampleGauge {
         value: Value::Float(-90.0),
@@ -102,6 +113,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: 0.0,
         max: 360.0,
         name: "Hesperornis regalis",
+        precision: 0,
     },
     ExampleGauge {
         value: Value::Float(0.0),
@@ -109,6 +121,7 @@ const EXAMPLES: [ExampleGauge; 12] = [
         min: -100.0,
         max: 100.0,
         name: "Arctognathus murryi",
+        precision: 1,
     },
 ];
 
@@ -140,6 +153,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
         signal: SignalInfo {
             name: Some(example.name.to_owned()),
+        },
+        format: GaugeTextFormat {
+            precision: example.precision,
         },
     });
 

@@ -4,9 +4,7 @@ use angle::Angle;
 use angle::Rad;
 use dioxus::prelude::*;
 
-use crate::core::{
-    ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, ProtractorGaugeStyle, Range, SignalInfo, Value,
-};
+use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range, SignalInfo, Value};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {
@@ -14,6 +12,7 @@ pub struct GaugeProps {
     style: GaugeStyle,
     range: Range,
     signal: SignalInfo,
+    format: GaugeTextFormat,
 }
 
 fn circle_stroke(width: Rad<f64>, offset: Rad<f64>) -> (String, String) {
@@ -28,6 +27,14 @@ fn circle_stroke(width: Rad<f64>, offset: Rad<f64>) -> (String, String) {
     (format!("{a},{b}"), format!("{offset}"))
 }
 
+fn format(value: &Value, options: &GaugeTextFormat) -> String {
+    match value {
+        Value::Float(x) => format!("{0:.1$}", x, options.precision),
+        Value::Percent(x) => format!("{0:.1$}%", x, options.precision),
+        Value::None => format!("N/A"),
+    }
+}
+
 #[allow(non_snake_case)]
 pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner_style: ExtArcGaugeStyle = match cx.props.style {
@@ -39,7 +46,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
     let inner = ExtArcGauge(cx, inner_style);
 
     let info = cx.props.signal.name.as_deref().unwrap_or("-");
-    let text = cx.props.value.to_string();
+    let text = format(&cx.props.value, &cx.props.format);
 
     let inner_width = inner_style.width;
     let inner_height = inner_style.height;

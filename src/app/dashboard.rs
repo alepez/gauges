@@ -35,6 +35,7 @@ pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
                     signal: item.signal.clone(),
                     style: item.style,
                     range: item.range,
+                    format: item.format,
                 }
             }
         }
