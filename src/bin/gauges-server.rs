@@ -29,6 +29,7 @@ struct GaugeConfig {
     style: GaugeStyleId,
     range: Range,
     signal: SignalInfo,
+    #[serde(default)]
     format: GaugeTextFormat,
 }
 

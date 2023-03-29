@@ -3,12 +3,14 @@ id = 0
 style = "Arc"
 range = { min = -20.0, max = 40.0 }
 signal = { name = "Temperature (C°)" }
+format = { precision = 1 }
 
 [[gauges]]
 id = 1
 style = "Circle"
 range = { min = 0.0, max = 100.0 }
 signal = { name = "Speed (knots)" }
+format = { precision = 2 }
 
 [[gauges]]
 id = 2

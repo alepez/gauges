@@ -90,8 +90,9 @@ impl Signals {
     }
 }
 
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize, Default)]
 pub struct GaugeTextFormat {
+    #[serde(default)]
     pub precision: usize,
 }
 
