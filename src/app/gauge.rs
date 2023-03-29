@@ -4,7 +4,10 @@ use angle::Angle;
 use angle::Rad;
 use dioxus::prelude::*;
 
-use crate::core::{ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range, SignalInfo, Value};
+use crate::core::{
+    ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range,
+    SignalInfo, Value,
+};
 
 #[derive(PartialEq, Props)]
 pub struct GaugeProps {

@@ -1,4 +1,4 @@
-use crate::core::{NamedRecord};
+use crate::core::NamedRecord;
 
 use std::net::SocketAddr;
 use std::str::FromStr;
@@ -52,7 +52,6 @@ pub fn channel() -> (Sender, Receiver) {
     let (sender, receiver) = unbounded_channel::<NamedRecord>();
     (Sender(sender), Receiver(receiver))
 }
-
 
 pub struct Publisher {
     stream: TcpStream,

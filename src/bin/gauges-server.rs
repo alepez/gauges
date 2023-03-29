@@ -51,7 +51,7 @@ impl From<GaugeConfig> for GaugeInfo {
 
 fn default_network() -> NetworkConfig {
     NetworkConfig {
-        addr: "127.0.0.1:9999".to_string()
+        addr: "127.0.0.1:9999".to_string(),
     }
 }
 

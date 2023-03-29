@@ -159,7 +159,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
     });
 
-    let dashboard = DashboardConfig { items: dashboard_items.collect(), addr: "".to_owned() };
+    let dashboard = DashboardConfig {
+        items: dashboard_items.collect(),
+        addr: "".to_owned(),
+    };
 
     launch_app_with_server(dashboard, &fake_server);
 

@@ -28,9 +28,7 @@ async fn main() -> Result<(), Error> {
                 let pos = raw_to_percent(data[1]);
                 Some(pos)
             }
-            _ => {
-                None
-            }
+            _ => None,
         };
 
         if let Some(value) = value {

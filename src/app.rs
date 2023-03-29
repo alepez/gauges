@@ -13,9 +13,9 @@ mod dashboard;
 mod gauge;
 
 struct AppProps<F, T>
-    where
-        F: Fn(Sender, String) -> T + 'static,
-        T: std::future::Future<Output=()>,
+where
+    F: Fn(Sender, String) -> T + 'static,
+    T: std::future::Future<Output = ()>,
 {
     dashboard: Rc<DashboardConfig>,
     launch_server: &'static F,
@@ -36,9 +36,9 @@ fn custom_head() -> String {
 }
 
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
-    where
-        F: Fn(Sender, String) -> T + 'static,
-        T: std::future::Future<Output=()> + 'static, // TODO Why this needs to be static?
+where
+    F: Fn(Sender, String) -> T + 'static,
+    T: std::future::Future<Output = ()> + 'static, // TODO Why this needs to be static?
 {
     let window = dioxus_desktop::WindowBuilder::new().with_title("Gauges");
 
@@ -55,9 +55,9 @@ pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &
 }
 
 fn app<F, T>(cx: Scope<AppProps<F, T>>) -> Element
-    where
-        F: Fn(Sender, String) -> T + 'static,
-        T: std::future::Future<Output=()>,
+where
+    F: Fn(Sender, String) -> T + 'static,
+    T: std::future::Future<Output = ()>,
 {
     let signals = use_ref(cx, || {
         let signals: Signals = cx.props.dashboard.as_ref().clone().into();
