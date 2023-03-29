@@ -25,12 +25,12 @@ pub fn launch_app(dashboard: DashboardConfig) {
 
 #[cfg(debug_assertions)]
 fn custom_head() -> String {
-    r#"<link rel="stylesheet" href="src/style.css" />"#.to_owned()
+    r#"<link rel="stylesheet" href="assets/style.css" />"#.to_owned()
 }
 
 #[cfg(not(debug_assertions))]
 fn custom_head() -> String {
-    format!(r#"<style>{}</style>"#, include_str!("style.css"))
+    format!(r#"<style>{}</style>"#, include_str!("../assets/style.css"))
 }
 
 pub fn launch_app_with_server<F, T>(dashboard: DashboardConfig, launch_server: &'static F)
