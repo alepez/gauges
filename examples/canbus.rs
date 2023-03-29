@@ -1,8 +1,8 @@
 use futures_util::stream::StreamExt;
-use gauges::core::{NamedRecord, Record, SignalId, Value};
-use tokio::io::AsyncWriteExt;
-use tokio::net::TcpStream;
 use tokio_socketcan::{CANSocket, Error};
+
+use gauges::core::{NamedRecord, Record, SignalId, Value};
+use gauges::net::Publisher;
 
 fn raw_to_percent(raw: u8) -> f64 {
     (raw as f64) / 250.0 * 100.0
@@ -12,7 +12,7 @@ fn raw_to_percent(raw: u8) -> f64 {
 async fn main() -> Result<(), Error> {
     let mut socket_rx = CANSocket::open("can0")?;
 
-    let mut stream = TcpStream::connect("127.0.0.1:9999").await?;
+    let mut publisher = Publisher::new("127.0.0.1:9999").await?;
 
     while let Some(Ok(frame)) = socket_rx.next().await {
         let data = frame.data();
@@ -40,9 +40,7 @@ async fn main() -> Result<(), Error> {
                     value: Value::Percent(value),
                 },
             };
-            let mut serialized = serde_json::to_vec(&record).unwrap();
-            serialized.push(b'\n');
-            if stream.write(&serialized).await.is_err() {
+            if publisher.publish(record).await.is_err() {
                 break;
             }
         }

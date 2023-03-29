@@ -1,9 +1,10 @@
-use gauges::core::{NamedRecord, Record, SignalId, Value};
 use std::collections::HashMap;
 use std::time::Duration;
-use tokio::io::AsyncWriteExt;
-use tokio::net::TcpStream;
+
 use tokio::time::sleep;
+
+use gauges::core::{NamedRecord, Record, SignalId, Value};
+use gauges::net::Publisher;
 
 struct RecordsGenerator {
     x: f64,
@@ -28,8 +29,6 @@ impl RecordsGenerator {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut stream = TcpStream::connect("127.0.0.1:9999").await?;
-
     let mut generators: HashMap<u32, RecordsGenerator> = HashMap::new();
     generators.insert(
         0,
@@ -61,6 +60,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut err = false;
 
+    let mut publisher = Publisher::new("127.0.0.1:9999").await?;
+
     while !err {
         for (&id, generator) in &mut generators {
             let record = generator.next();
@@ -68,9 +69,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 id: SignalId::Num(id),
                 record,
             };
-            let mut serialized = serde_json::to_vec(&record).unwrap();
-            serialized.push(b'\n');
-            if stream.write(&serialized).await.is_err() {
+
+            if publisher.publish(record).await.is_err() {
                 err = true;
                 break;
             }

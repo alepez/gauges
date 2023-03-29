@@ -2,7 +2,8 @@ use crate::core::{NamedRecord};
 
 use std::net::SocketAddr;
 use std::str::FromStr;
-use tokio::net::{TcpListener, TcpStream};
+use tokio::io::AsyncWriteExt;
+use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed, LinesCodec};
@@ -50,4 +51,22 @@ impl Sender {
 pub fn channel() -> (Sender, Receiver) {
     let (sender, receiver) = unbounded_channel::<NamedRecord>();
     (Sender(sender), Receiver(receiver))
+}
+
+
+pub struct Publisher {
+    stream: TcpStream,
+}
+
+impl Publisher {
+    pub async fn new<A: ToSocketAddrs>(addr: A) -> std::io::Result<Self> {
+        let stream = TcpStream::connect(addr).await?;
+        Ok(Self { stream })
+    }
+
+    pub async fn publish(&mut self, record: NamedRecord) -> std::io::Result<usize> {
+        let mut serialized = serde_json::to_vec(&record).unwrap();
+        serialized.push(b'\n');
+        self.stream.write(&serialized).await
+    }
 }
