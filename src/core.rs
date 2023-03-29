@@ -141,10 +141,10 @@ pub struct DashboardConfig {
     pub items: Vec<GaugeInfo>,
 }
 
-impl Into<Signals> for DashboardConfig {
-    fn into(self) -> Signals {
+impl From<DashboardConfig> for Signals {
+    fn from(value: DashboardConfig) -> Self {
         let mut signals = Signals::default();
-        for item in self.items.into_iter() {
+        for item in value.items.into_iter() {
             signals.insert(
                 item.id,
                 SignalInfo {

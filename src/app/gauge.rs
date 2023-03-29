@@ -34,7 +34,7 @@ fn format(value: &Value, options: &GaugeTextFormat) -> String {
     match value {
         Value::Float(x) => format!("{0:.1$}", x, options.precision),
         Value::Percent(x) => format!("{0:.1$}%", x, options.precision),
-        Value::None => format!("N/A"),
+        Value::None => "N/A".to_string(),
     }
 }
 
