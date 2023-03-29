@@ -1,18 +1,21 @@
 use std::f64::consts::PI;
 
+use angle::Rad;
+use serde::{Deserialize, Serialize};
+
 use gauges::app::launch_app;
 use gauges::prelude::*;
-use serde::{Deserialize, Serialize};
 
 const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 50.0 });
 
 const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
     radius: 50.0,
-    begin_angle: 225.0 / 180.0 * PI,
-    full_width: 270.0 / 180.0 * PI,
+    begin_angle: Rad(225.0 / 180.0 * PI),
+    full_width: Rad(270.0 / 180.0 * PI),
 });
 
 const PROTRACTOR_STYLE: GaugeStyle = GaugeStyle::Protractor(ProtractorGaugeStyle { radius: 50.0 });
+
 #[derive(Serialize, Deserialize)]
 enum GaugeStyleId {
     Arc,

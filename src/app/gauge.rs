@@ -1,5 +1,7 @@
 use std::f64::consts::PI;
 
+use angle::Angle;
+use angle::Rad;
 use dioxus::prelude::*;
 
 use crate::core::{
@@ -14,10 +16,15 @@ pub struct GaugeProps {
     signal: SignalInfo,
 }
 
-fn circle_stroke(width: f64, offset: f64) -> (String, String) {
-    let offset = -offset + (PI / 2.0);
+fn circle_stroke(width: Rad<f64>, offset: Rad<f64>) -> (String, String) {
+    let offset = -offset + Rad::half_pi();
     let a = width;
-    let b = (2.0 * PI) - width;
+    let b = Rad::two_pi() - width;
+
+    let offset = offset.value();
+    let a = a.value();
+    let b = b.value();
+
     (format!("{a},{b}"), format!("{offset}"))
 }
 
@@ -119,9 +126,9 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let center_x = width / 2.;
     let center_y = width / 2.;
 
-    let real_width = norm_value * full_width;
+    let real_width = full_width * norm_value;
 
-    let arrow_width = 0.05;
+    let arrow_width = Rad(0.05);
     let arrow_angle = begin_angle + real_width - (arrow_width / 2.0);
 
     let show_arrow = arrow == ArrowType::OnlyArrow;
@@ -179,8 +186,8 @@ fn NoneGauge(cx: Scope<GaugeProps>) -> Element {
 struct ArcProps {
     center_x: f64,
     center_y: f64,
-    begin_angle: f64,
-    width: f64,
+    begin_angle: Rad<f64>,
+    width: Rad<f64>,
     radius: f64,
     class: &'static str,
     stroke_width: f64,
@@ -232,8 +239,8 @@ struct ExtArcGaugeStyle {
     radius: f64,
     width: f64,
     height: f64,
-    begin_angle: f64,
-    full_width: f64,
+    begin_angle: Rad<f64>,
+    full_width: Rad<f64>,
     arrow: ArrowType,
     normalize_policy: NormalizePolicy,
 }
@@ -256,8 +263,8 @@ impl From<CircleGaugeStyle> for ExtArcGaugeStyle {
     fn from(val: CircleGaugeStyle) -> Self {
         ExtArcGaugeStyle {
             radius: val.radius,
-            begin_angle: 0.0,
-            full_width: 2.0 * PI,
+            begin_angle: Rad(0.0),
+            full_width: Rad::two_pi(),
             arrow: ArrowType::NoArrow,
             normalize_policy: NormalizePolicy::Clamp,
             width: val.radius * 3.0,
@@ -270,8 +277,8 @@ impl From<ProtractorGaugeStyle> for ExtArcGaugeStyle {
     fn from(val: ProtractorGaugeStyle) -> Self {
         ExtArcGaugeStyle {
             radius: val.radius,
-            begin_angle: 0.0,
-            full_width: 2.0 * PI,
+            begin_angle: Rad(0.0),
+            full_width: Rad::two_pi(),
             arrow: ArrowType::OnlyArrow,
             normalize_policy: NormalizePolicy::Mod,
             width: val.radius * 3.0,

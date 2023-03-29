@@ -17,6 +17,7 @@ exclude = [".gitignore"]
 name = "gauges-server"
 
 [dependencies]
+angle = "0.5.0"
 dioxus = "0.3"
 dioxus-desktop = "0.3"
 serde = { version = "1", features = ["derive"] }

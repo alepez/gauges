@@ -112,8 +112,8 @@ pub struct CircleGaugeStyle {
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct ArcGaugeStyle {
     pub radius: f64,
-    pub begin_angle: f64,
-    pub full_width: f64,
+    pub begin_angle: angle::Rad<f64>,
+    pub full_width: angle::Rad<f64>,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
