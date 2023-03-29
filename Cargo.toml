@@ -1,6 +1,6 @@
 [package]
 name = "gauges"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Alessandro Pezzato <alessandro.pezzato@gmail.com>"]
 edition = "2021"
 license = "MIT"
@@ -17,15 +17,15 @@ exclude = [".gitignore"]
 name = "gauges-server"
 
 [dependencies]
-angle = "0.5.0"
+angle = "0.5"
 dioxus = "0.3"
 dioxus-desktop = "0.3"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
-tokio-stream = { version = "0.1.12" }
-tokio-util = { version = "0.7.7", features = ["codec"] }
-toml = "0.7.3"
+tokio-stream = { version = "0.1" }
+tokio-util = { version = "0.7", features = ["codec"] }
+toml = "0.7"
 
 [dev-dependencies]
 futures-util = "0.3"
