@@ -128,43 +128,39 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
     let show_real = arrow == ArrowType::NoArrow;
 
     cx.render(rsx! {
-        div {
-            div {
-                svg {
-                    width: width,
-                    height: height,
-                    Arc {
-                        color: "#000000",
-                        center_x: center_x,
-                        center_y: center_y,
-                        radius: radius,
-                        begin_angle: begin_angle,
-                        width: full_width,
-                        stroke_width: 20.0,
-                    }
-                    if show_real {
-                        rsx!(Arc {
-                            color: "#00FF00",
-                            center_x: center_x,
-                            center_y: center_y,
-                            radius: radius,
-                            begin_angle: begin_angle,
-                            width: real_width,
-                            stroke_width: 20.0,
-                        })
-                    }
-                    if show_arrow {
-                        rsx!(Arc {
-                            color: "#FFFFFF",
-                            center_x: center_x,
-                            center_y: center_y,
-                            radius: radius,
-                            begin_angle: arrow_angle,
-                            width: arrow_width,
-                            stroke_width: 30.0,
-                        })
-                    }
-                }
+        svg {
+            width: width,
+            height: height,
+            Arc {
+                color: "#000000",
+                center_x: center_x,
+                center_y: center_y,
+                radius: radius,
+                begin_angle: begin_angle,
+                width: full_width,
+                stroke_width: 20.0,
+            }
+            if show_real {
+                rsx!(Arc {
+                    color: "#00FF00",
+                    center_x: center_x,
+                    center_y: center_y,
+                    radius: radius,
+                    begin_angle: begin_angle,
+                    width: real_width,
+                    stroke_width: 20.0,
+                })
+            }
+            if show_arrow {
+                rsx!(Arc {
+                    color: "#FFFFFF",
+                    center_x: center_x,
+                    center_y: center_y,
+                    radius: radius,
+                    begin_angle: arrow_angle,
+                    width: arrow_width,
+                    stroke_width: 30.0,
+                })
             }
         }
     })
