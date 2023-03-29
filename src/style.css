@@ -46,3 +46,15 @@ body {
 
 .gauge-inner {
 }
+
+.gauge-inner .arc-background {
+  stroke: #000000;
+}
+
+.gauge-inner .arc-foreground {
+  stroke: #00FF00;
+}
+
+.gauge-inner .arc-arrow {
+  stroke: #FFFFFF;
+}

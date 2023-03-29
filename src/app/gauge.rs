@@ -129,10 +129,11 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
 
     cx.render(rsx! {
         svg {
+            class: "gauge-inner",
             width: width,
             height: height,
             Arc {
-                color: "#000000",
+                class: "arc-background",
                 center_x: center_x,
                 center_y: center_y,
                 radius: radius,
@@ -142,7 +143,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
             }
             if show_real {
                 rsx!(Arc {
-                    color: "#00FF00",
+                    class: "arc-foreground",
                     center_x: center_x,
                     center_y: center_y,
                     radius: radius,
@@ -153,7 +154,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
             }
             if show_arrow {
                 rsx!(Arc {
-                    color: "#FFFFFF",
+                    class: "arc-arrow",
                     center_x: center_x,
                     center_y: center_y,
                     radius: radius,
@@ -181,7 +182,7 @@ struct ArcProps {
     begin_angle: f64,
     width: f64,
     radius: f64,
-    color: &'static str,
+    class: &'static str,
     stroke_width: f64,
 }
 
@@ -193,7 +194,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
         begin_angle,
         width,
         radius,
-        color,
+        class,
         stroke_width,
     } = *cx.props;
 
@@ -202,7 +203,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
     cx.render(rsx! {
         circle {
             fill: "none",
-            stroke: "{color}",
+            class: class,
             stroke_width: stroke_width,
             cx: center_x,
             cy: center_y,
