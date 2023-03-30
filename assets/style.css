@@ -60,7 +60,6 @@ body {
 }
 
 .gauge .gauge-update-indicator {
-  background: #000000;
   position: absolute;
   bottom: 4px;
   right: 4px;
@@ -78,4 +77,8 @@ body {
 
 .gauge .gauge-update-indicator.age-expired {
   background: #FF0000;
+}
+
+.gauge .gauge-update-indicator.age-unknown {
+  display: none;
 }

@@ -92,12 +92,16 @@ where
         }
     });
 
+    let show_age_indicator = cx.props.dashboard.age_indicator;
+
     let _ = use_coroutine(cx, |_: UnboundedReceiver<()>| {
         to_owned![updates_count];
         async move {
-            loop {
-                tokio::time::sleep(std::time::Duration::from_millis(100)).await;
-                updates_count += 1;
+            if show_age_indicator {
+                loop {
+                    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                    updates_count += 1;
+                }
             }
         }
     });
@@ -107,6 +111,7 @@ where
             config: cx.props.dashboard.clone(),
             signals: signals.read().clone(),
             updates_count: *updates_count.get(),
+            age_indicator: show_age_indicator,
         }
     })
 }

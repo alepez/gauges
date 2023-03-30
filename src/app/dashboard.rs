@@ -12,6 +12,7 @@ pub struct DashboardProps {
     signals: Signals,
     config: Rc<DashboardConfig>,
     updates_count: usize,
+    age_indicator: bool,
 }
 
 fn extract_value(signals: &Signals, id: &SignalId) -> Option<(Value, Duration)> {
@@ -20,12 +21,18 @@ fn extract_value(signals: &Signals, id: &SignalId) -> Option<(Value, Duration)> 
     Some((record.value.clone(), age))
 }
 
-fn foo<'a>(signals: &Signals, info: &'a GaugeInfo) -> (&'a GaugeInfo, Value, Age) {
+fn foo<'a>(
+    signals: &Signals,
+    show_age_indicator: bool,
+    info: &'a GaugeInfo,
+) -> (&'a GaugeInfo, Value, Age) {
     let x = extract_value(signals, &info.id);
     let age = x.as_ref().map(|x| x.1).unwrap_or(Duration::MAX);
     let value = x.as_ref().map(|x| x.0.clone()).unwrap_or(Value::None);
 
-    let age = if age < Duration::from_millis(250) {
+    let age = if !show_age_indicator {
+        Age::Unknown
+    } else if age < Duration::from_millis(250) {
         Age::New
     } else if age < Duration::from_secs(10) {
         Age::Valid
@@ -40,11 +47,12 @@ fn foo<'a>(signals: &Signals, info: &'a GaugeInfo) -> (&'a GaugeInfo, Value, Age
 pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
     let signals = &cx.props.signals;
     let items = &cx.props.config.items;
+    let show_age_indicator = cx.props.age_indicator;
 
     cx.render(rsx! {
         div {
             class: "dashboard",
-            for (item, value, age) in items.iter().map(|x| foo(signals, x)) {
+            for (item, value, age) in items.iter().map(|x| foo(signals, show_age_indicator, x)) {
                 Gauge {
                     value: value
                     signal: item.signal.clone(),

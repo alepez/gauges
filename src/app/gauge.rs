@@ -44,6 +44,7 @@ fn class_from_age(age: &Age) -> &'static str {
         Age::New => "age-new",
         Age::Valid => "age-valid",
         Age::Expired => "age-expired",
+        Age::Unknown => "age-unknown",
     }
 }
 

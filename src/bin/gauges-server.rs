@@ -49,22 +49,39 @@ impl From<GaugeConfig> for GaugeInfo {
     }
 }
 
-fn default_network() -> NetworkConfig {
-    NetworkConfig {
-        addr: "127.0.0.1:9999".to_string(),
-    }
-}
-
 #[derive(Serialize, Deserialize)]
 struct NetworkConfig {
     addr: String,
 }
 
+impl Default for NetworkConfig {
+    fn default() -> Self {
+        NetworkConfig {
+            addr: "127.0.0.1:9999".to_string(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+struct CommonDashboardConfig {
+    age_indicator: bool,
+}
+
+impl Default for CommonDashboardConfig {
+    fn default() -> Self {
+        Self {
+            age_indicator: true,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 struct ServerConfig {
-    #[serde(default = "default_network")]
+    #[serde(default)]
     network: NetworkConfig,
     gauges: Vec<GaugeConfig>,
+    #[serde(default)]
+    dashboard: CommonDashboardConfig,
 }
 
 impl From<ServerConfig> for DashboardConfig {
@@ -72,6 +89,7 @@ impl From<ServerConfig> for DashboardConfig {
         DashboardConfig {
             items: value.gauges.into_iter().map(|x| x.into()).collect(),
             addr: value.network.addr,
+            age_indicator: value.dashboard.age_indicator,
         }
     }
 }

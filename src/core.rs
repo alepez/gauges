@@ -160,6 +160,7 @@ pub enum GaugeStyle {
 pub struct DashboardConfig {
     pub addr: String,
     pub items: Vec<GaugeInfo>,
+    pub age_indicator: bool,
 }
 
 impl From<DashboardConfig> for Signals {
@@ -182,4 +183,5 @@ pub enum Age {
     New,
     Valid,
     Expired,
+    Unknown,
 }
