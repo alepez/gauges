@@ -1,6 +1,6 @@
 [package]
 name = "gauges"
-version = "0.0.2"
+version = "0.1.0"
 authors = ["Alessandro Pezzato <alessandro.pezzato@gmail.com>"]
 edition = "2021"
 license = "MIT"
