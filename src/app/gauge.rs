@@ -5,7 +5,7 @@ use angle::Rad;
 use dioxus::prelude::*;
 
 use crate::core::{
-    ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range,
+    Age, ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range,
     SignalInfo, Value,
 };
 
@@ -16,6 +16,7 @@ pub struct GaugeProps {
     range: Range,
     signal: SignalInfo,
     format: GaugeTextFormat,
+    age: Age,
 }
 
 fn circle_stroke(width: Rad<f64>, offset: Rad<f64>) -> (String, String) {
@@ -35,6 +36,14 @@ fn format(value: &Value, options: &GaugeTextFormat) -> String {
         Value::Float(x) => format!("{0:.1$}", x, options.precision),
         Value::Percent(x) => format!("{0:.1$}%", x, options.precision),
         Value::None => "N/A".to_string(),
+    }
+}
+
+fn class_from_age(age: &Age) -> &'static str {
+    match age {
+        Age::New => "age-new",
+        Age::Valid => "age-valid",
+        Age::Expired => "age-expired",
     }
 }
 
@@ -59,6 +68,8 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
 
     let full_width = inner_width;
     let full_height = inner_height + info_height;
+
+    let indicator_age_class = class_from_age(&cx.props.age);
 
     cx.render(rsx! {
         div {
@@ -88,6 +99,9 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
             div {
                 class: "gauge-inner-wrapper",
                 inner
+            }
+            div {
+                class: "gauge-update-indicator {indicator_age_class}",
             }
         }
     })

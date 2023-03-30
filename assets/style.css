@@ -58,3 +58,24 @@ body {
 .gauge-inner .arc-arrow {
   stroke: #FFFFFF;
 }
+
+.gauge .gauge-update-indicator {
+  background: #000000;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 4px;
+  height: 4px;
+}
+
+.gauge .gauge-update-indicator.age-new {
+  background: #00FF00;
+}
+
+.gauge .gauge-update-indicator.age-valid {
+  background: #FFFF00;
+}
+
+.gauge .gauge-update-indicator.age-expired {
+  background: #FF0000;
+}

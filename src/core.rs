@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fmt::Display;
+use std::time::Duration;
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -57,16 +58,39 @@ pub struct Signal {
     pub current_record: Option<Record>,
 }
 
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExtendedSignal {
+    signal: Signal,
+    instant: std::time::Instant,
+}
+
+impl ExtendedSignal {
+    pub fn signal(&self) -> &Signal {
+        &self.signal
+    }
+    pub fn age(&self) -> Duration {
+        std::time::Instant::now() - self.instant
+    }
+}
+
+impl From<Signal> for ExtendedSignal {
+    fn from(signal: Signal) -> Self {
+        let instant = std::time::Instant::now();
+        ExtendedSignal { signal, instant }
+    }
+}
+
 #[derive(Debug, Default, PartialEq, Clone)]
 pub struct Signals {
-    items: HashMap<SignalId, Signal>,
+    items: HashMap<SignalId, ExtendedSignal>,
 }
 
 impl Signals {
     pub fn insert_named_record(&mut self, record: NamedRecord) {
         let NamedRecord { id, record } = record;
-        if let Some(signal) = self.items.get_mut(&id) {
-            signal.current_record = Some(record);
+        if let Some(ext) = self.items.get_mut(&id) {
+            ext.signal.current_record = Some(record);
+            ext.instant = std::time::Instant::now();
         }
     }
 
@@ -77,16 +101,13 @@ impl Signals {
                 id,
                 info,
                 current_record: None,
-            },
+            }
+            .into(),
         );
     }
 
-    pub fn get(&self, id: &SignalId) -> Option<&Signal> {
+    pub fn get(&self, id: &SignalId) -> Option<&ExtendedSignal> {
         self.items.get(id)
-    }
-
-    pub fn iter(&self) -> std::collections::hash_map::Values<'_, SignalId, Signal> {
-        self.items.values()
     }
 }
 
@@ -154,4 +175,11 @@ impl From<DashboardConfig> for Signals {
         }
         signals
     }
+}
+
+#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+pub enum Age {
+    New,
+    Valid,
+    Expired,
 }
