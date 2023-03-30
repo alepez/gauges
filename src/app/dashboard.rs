@@ -4,7 +4,7 @@ use std::time::Duration;
 use dioxus::prelude::*;
 
 use crate::app::gauge::Gauge;
-use crate::core::{Age, DashboardConfig, GaugeInfo, Signal};
+use crate::core::{Age, DashboardConfig, GaugeInfo};
 use crate::core::{SignalId, Signals, Value};
 
 #[derive(PartialEq, Props)]
