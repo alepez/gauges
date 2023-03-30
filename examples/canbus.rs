@@ -24,12 +24,8 @@ async fn main() -> Result<(), Error> {
         let id = frame.id();
 
         let records = match id {
-            0x09F50317 => {
-                // PGN 128259
-                vec![]
-            }
             0x09FD0217 => {
-                // PGN 130306
+                // PGN=130306 SRC=23 PRIO=2 (Wind Data)
                 let speed = decode_u16_with_offset(data, 1) * (1.94384 / 100.0);
                 let angle = decode_u16_with_offset(data, 3) * (180.0 / PI / 10000.0);
                 let angle = if angle > 180.0 { angle - 360.0 } else { angle };
@@ -39,10 +35,6 @@ async fn main() -> Result<(), Error> {
                 } else {
                     vec![]
                 }
-            }
-            0x09FD0C17 => {
-                // PGN 130316
-                vec![]
             }
             _ => vec![],
         };
