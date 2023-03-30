@@ -64,6 +64,8 @@ where
         signals
     });
 
+    let updates_count = use_state(cx, || 0);
+
     let started = use_state(cx, || false);
 
     let (sender, mut receiver) = channel();
@@ -90,10 +92,21 @@ where
         }
     });
 
+    let _ = use_coroutine(cx, |_: UnboundedReceiver<()>| {
+        to_owned![updates_count];
+        async move {
+            loop {
+                tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                updates_count += 1;
+            }
+        }
+    });
+
     cx.render(rsx! {
         Dashboard {
             config: cx.props.dashboard.clone(),
             signals: signals.read().clone(),
+            updates_count: *updates_count.get(),
         }
     })
 }

@@ -11,6 +11,7 @@ use crate::core::{SignalId, Signals, Value};
 pub struct DashboardProps {
     signals: Signals,
     config: Rc<DashboardConfig>,
+    updates_count: usize,
 }
 
 fn extract_value(signals: &Signals, id: &SignalId) -> Option<(Value, Duration)> {
@@ -24,7 +25,7 @@ fn foo<'a>(signals: &Signals, info: &'a GaugeInfo) -> (&'a GaugeInfo, Value, Age
     let age = x.as_ref().map(|x| x.1).unwrap_or(Duration::MAX);
     let value = x.as_ref().map(|x| x.0.clone()).unwrap_or(Value::None);
 
-    let age = if age < Duration::from_millis(100) {
+    let age = if age < Duration::from_millis(250) {
         Age::New
     } else if age < Duration::from_secs(10) {
         Age::Valid
