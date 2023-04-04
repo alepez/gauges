@@ -54,21 +54,27 @@ impl From<GaugeConfig> for GaugeInfo {
     }
 }
 
+fn default_addr() -> String {
+    "127.0.0.1:9999".to_owned()
+}
+
 #[derive(Serialize, Deserialize)]
 struct NetworkConfig {
+    #[serde(default = "default_addr")]
     addr: String,
 }
 
 impl Default for NetworkConfig {
     fn default() -> Self {
         NetworkConfig {
-            addr: "127.0.0.1:9999".to_string(),
+            addr: default_addr(),
         }
     }
 }
 
 #[derive(Serialize, Deserialize)]
 struct CommonDashboardConfig {
+    #[serde(default)]
     age_indicator: bool,
 }
 

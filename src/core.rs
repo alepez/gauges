@@ -2,8 +2,7 @@ use std::collections::HashMap;
 use std::fmt::Display;
 use std::time::Duration;
 
-use serde::Deserialize;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Value {
