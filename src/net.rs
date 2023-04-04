@@ -67,13 +67,13 @@ impl Publisher {
 
     pub async fn publish(&mut self, record: NamedRecord) -> std::io::Result<()> {
         if let Some(stream) = &mut self.stream {
-            let mut serialized = serde_json::to_vec(&record).unwrap();
-            serialized.push(b'\n');
-            let result = stream.write(&serialized).await;
+            let result = Self::write(stream, &record).await;
             if result.is_err() {
+                // Error writing, reconnect
                 self.reconnect().await;
             }
         } else {
+            // Not connected, reconnect
             self.reconnect().await;
         }
 
@@ -84,5 +84,11 @@ impl Publisher {
         let addr = self.addr;
         tokio::time::sleep(Duration::from_millis(100)).await;
         self.stream = TcpStream::connect(addr).await.ok();
+    }
+
+    async fn write(stream: &mut TcpStream, record: &NamedRecord) -> Result<usize, std::io::Error> {
+        let mut serialized = serde_json::to_vec(&record).unwrap();
+        serialized.push(b'\n');
+        stream.write(&serialized).await
     }
 }
