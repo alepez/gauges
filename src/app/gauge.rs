@@ -37,8 +37,8 @@ fn format(value: &Value, options: &GaugeTextFormat) -> String {
         Value::Float(x) => format!("{0:.1$}", x, options.precision),
         Value::Percent(x) => format!("{0:.1$}%", x, options.precision),
         Value::None => "N/A".to_string(),
-        Value::OnOff(false) => format!("Off"),
-        Value::OnOff(true) => format!("On"),
+        Value::OnOff(false) => "Off".to_string(),
+        Value::OnOff(true) => "On".to_string(),
     }
 }
 

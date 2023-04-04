@@ -20,7 +20,7 @@ impl RecordGenerator for OnOffGenerator {
     fn next(&mut self) -> Record {
         let time_since_start = std::time::Instant::now() - self.t;
         let x = time_since_start.as_secs_f64() % self.period.as_secs_f64();
-        let y = (x as f64) / (self.period.as_secs_f64());
+        let y = x / (self.period.as_secs_f64());
         let on = y < self.on_ratio;
         Record {
             value: Value::OnOff(on),
@@ -28,9 +28,9 @@ impl RecordGenerator for OnOffGenerator {
     }
 }
 
-impl Into<Generator> for OnOffGenerator {
-    fn into(self) -> Generator {
-        Generator::OnOff(self)
+impl From<OnOffGenerator> for Generator {
+    fn from(val: OnOffGenerator) -> Self {
+        Generator::OnOff(val)
     }
 }
 
@@ -55,9 +55,9 @@ impl RecordGenerator for FloatGenerator {
     }
 }
 
-impl Into<Generator> for FloatGenerator {
-    fn into(self) -> Generator {
-        Generator::Float(self)
+impl From<FloatGenerator> for Generator {
+    fn from(val: FloatGenerator) -> Self {
+        Generator::Float(val)
     }
 }
 
