@@ -17,7 +17,8 @@ fn decode_u16_with_offset(data: &[u8], offset: usize) -> f64 {
 async fn main() -> Result<(), Error> {
     let mut socket_rx = CANSocket::open("can0")?;
 
-    let mut publisher = Publisher::new("127.0.0.1:9999").await?;
+    let addr = "127.0.0.1:9999".parse().unwrap();
+    let mut publisher = Publisher::new(addr).await;
 
     while let Some(Ok(frame)) = socket_rx.next().await {
         let data = frame.data();
