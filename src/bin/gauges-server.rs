@@ -16,17 +16,21 @@ const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
 
 const PROTRACTOR_STYLE: GaugeStyle = GaugeStyle::Protractor(ProtractorGaugeStyle { radius: 50.0 });
 
+const ON_OFF_STYLE: GaugeStyle = GaugeStyle::OnOff(OnOffGaugeStyle { radius: 50.0 });
+
 #[derive(Serialize, Deserialize)]
 enum GaugeStyleId {
     Arc,
     Circle,
     Protractor,
+    OnOff,
 }
 
 #[derive(Serialize, Deserialize)]
 struct GaugeConfig {
     id: usize,
     style: GaugeStyleId,
+    #[serde(default)]
     range: Range,
     signal: SignalInfo,
     #[serde(default)]
@@ -41,6 +45,7 @@ impl From<GaugeConfig> for GaugeInfo {
                 GaugeStyleId::Arc => ARC_STYLE,
                 GaugeStyleId::Circle => CIRCLE_STYLE,
                 GaugeStyleId::Protractor => PROTRACTOR_STYLE,
+                GaugeStyleId::OnOff => ON_OFF_STYLE,
             },
             range: value.range,
             signal: value.signal,

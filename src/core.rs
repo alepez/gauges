@@ -135,6 +135,12 @@ pub struct Range {
     pub max: f64,
 }
 
+impl Default for Range {
+    fn default() -> Self {
+        Self { min: 0.0, max: 1.0 }
+    }
+}
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct CircleGaugeStyle {
     pub radius: f64,
@@ -153,10 +159,16 @@ pub struct ProtractorGaugeStyle {
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
+pub struct OnOffGaugeStyle {
+    pub radius: f64,
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum GaugeStyle {
     Arc(ArcGaugeStyle),
     Circle(CircleGaugeStyle),
     Protractor(ProtractorGaugeStyle),
+    OnOff(OnOffGaugeStyle),
 }
 
 #[derive(PartialEq, Clone)]

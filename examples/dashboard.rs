@@ -26,7 +26,9 @@ const ARC_STYLE: GaugeStyle = GaugeStyle::Arc(ArcGaugeStyle {
 
 const PROTRACTOR_STYLE: GaugeStyle = GaugeStyle::Protractor(ProtractorGaugeStyle { radius: 50.0 });
 
-const EXAMPLES: [ExampleGauge; 12] = [
+const ON_OFF_STYLE: GaugeStyle = GaugeStyle::OnOff(OnOffGaugeStyle { radius: 50.0 });
+
+const EXAMPLES: [ExampleGauge; 14] = [
     ExampleGauge {
         value: Value::None,
         style: ARC_STYLE,
@@ -120,6 +122,22 @@ const EXAMPLES: [ExampleGauge; 12] = [
         style: ARC_STYLE,
         min: -100.0,
         max: 100.0,
+        name: "Arctognathus murryi",
+        precision: 1,
+    },
+    ExampleGauge {
+        value: Value::OnOff(true),
+        style: ON_OFF_STYLE,
+        min: 0.0,
+        max: 1.0,
+        name: "Arctognathus murryi",
+        precision: 1,
+    },
+    ExampleGauge {
+        value: Value::OnOff(false),
+        style: ON_OFF_STYLE,
+        min: 0.0,
+        max: 1.0,
         name: "Arctognathus murryi",
         precision: 1,
     },

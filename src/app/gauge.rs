@@ -4,6 +4,7 @@ use angle::Angle;
 use angle::Rad;
 use dioxus::prelude::*;
 
+use crate::core::OnOffGaugeStyle;
 use crate::core::{
     Age, ArcGaugeStyle, CircleGaugeStyle, GaugeStyle, GaugeTextFormat, ProtractorGaugeStyle, Range,
     SignalInfo, Value,
@@ -56,6 +57,7 @@ pub fn Gauge(cx: Scope<GaugeProps>) -> Element {
         GaugeStyle::Arc(style) => style.into(),
         GaugeStyle::Circle(style) => style.into(),
         GaugeStyle::Protractor(style) => style.into(),
+        GaugeStyle::OnOff(style) => style.into(),
     };
 
     let inner = ExtArcGauge(cx, inner_style);
@@ -116,7 +118,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         Value::None => None,
         Value::Float(x) => Some(x),
         Value::Percent(x) => Some(x),
-        Value::OnOff(_) => None,
+        Value::OnOff(x) => Some(if x { 1.0 } else { 0.0 }),
     };
 
     if value.is_none() {
@@ -149,6 +151,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
             let z = value.rem_euclid(range_width);
             (z - min_value) / range_width
         }
+        NormalizePolicy::Bool => value,
     };
 
     let center_x = width / 2.;
@@ -254,6 +257,7 @@ fn Arc(cx: Scope<ArcProps>) -> Element {
 enum NormalizePolicy {
     Clamp,
     Mod,
+    Bool,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -309,6 +313,20 @@ impl From<ProtractorGaugeStyle> for ExtArcGaugeStyle {
             full_width: Rad::two_pi(),
             arrow: ArrowType::OnlyArrow,
             normalize_policy: NormalizePolicy::Mod,
+            width: val.radius * 3.0,
+            height: val.radius * 3.0,
+        }
+    }
+}
+
+impl From<OnOffGaugeStyle> for ExtArcGaugeStyle {
+    fn from(val: OnOffGaugeStyle) -> Self {
+        ExtArcGaugeStyle {
+            radius: val.radius,
+            begin_angle: Rad(0.0),
+            full_width: Rad::two_pi(),
+            arrow: ArrowType::NoArrow,
+            normalize_policy: NormalizePolicy::Bool,
             width: val.radius * 3.0,
             height: val.radius * 3.0,
         }

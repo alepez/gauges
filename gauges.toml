@@ -23,3 +23,8 @@ id = 2
 style = "Protractor"
 range = { min = 0.0, max = 360.0 }
 signal = { name = "Angle (deg)" }
+
+[[gauges]]
+id = 3
+style = "OnOff"
+signal = { name = "Active" }
