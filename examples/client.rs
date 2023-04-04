@@ -18,8 +18,12 @@ struct OnOffGenerator {
 
 impl RecordGenerator for OnOffGenerator {
     fn next(&mut self) -> Record {
+        let time_since_start = std::time::Instant::now() - self.t;
+        let x = time_since_start.as_secs_f64() % self.period.as_secs_f64();
+        let y = (x as f64) / (self.period.as_secs_f64());
+        let on = y < self.on_ratio;
         Record {
-            value: Value::OnOff(true),
+            value: Value::OnOff(on),
         }
     }
 }
