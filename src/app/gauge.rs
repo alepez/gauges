@@ -36,6 +36,8 @@ fn format(value: &Value, options: &GaugeTextFormat) -> String {
         Value::Float(x) => format!("{0:.1$}", x, options.precision),
         Value::Percent(x) => format!("{0:.1$}%", x, options.precision),
         Value::None => "N/A".to_string(),
+        Value::OnOff(false) => format!("Off"),
+        Value::OnOff(true) => format!("On"),
     }
 }
 
@@ -114,6 +116,7 @@ fn ExtArcGauge(cx: Scope<GaugeProps>, style: ExtArcGaugeStyle) -> Element {
         Value::None => None,
         Value::Float(x) => Some(x),
         Value::Percent(x) => Some(x),
+        Value::OnOff(_) => None,
     };
 
     if value.is_none() {

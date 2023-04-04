@@ -10,6 +10,7 @@ pub enum Value {
     None,
     Float(f64),
     Percent(f64),
+    OnOff(bool),
 }
 
 impl Display for Value {
@@ -18,6 +19,8 @@ impl Display for Value {
             Value::Float(x) => write!(f, "{:8.3}", x),
             Value::Percent(x) => write!(f, "{:8.1}%", x),
             Value::None => write!(f, "-"),
+            Value::OnOff(false) => write!(f, "Off"),
+            Value::OnOff(true) => write!(f, "On"),
         }
     }
 }
