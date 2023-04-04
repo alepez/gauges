@@ -2,8 +2,9 @@ use crate::core::NamedRecord;
 
 use std::net::SocketAddr;
 use std::str::FromStr;
+use std::time::Duration;
 use tokio::io::AsyncWriteExt;
-use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
+use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio_stream::StreamExt;
 use tokio_util::codec::{Framed, LinesCodec};
@@ -54,18 +55,34 @@ pub fn channel() -> (Sender, Receiver) {
 }
 
 pub struct Publisher {
-    stream: TcpStream,
+    stream: Option<TcpStream>,
+    addr: SocketAddr,
 }
 
 impl Publisher {
-    pub async fn new<A: ToSocketAddrs>(addr: A) -> std::io::Result<Self> {
-        let stream = TcpStream::connect(addr).await?;
-        Ok(Self { stream })
+    pub async fn new(addr: SocketAddr) -> Publisher {
+        let stream = TcpStream::connect(addr).await.ok();
+        Self { stream, addr }
     }
 
-    pub async fn publish(&mut self, record: NamedRecord) -> std::io::Result<usize> {
-        let mut serialized = serde_json::to_vec(&record).unwrap();
-        serialized.push(b'\n');
-        self.stream.write(&serialized).await
+    pub async fn publish(&mut self, record: NamedRecord) -> std::io::Result<()> {
+        if let Some(stream) = &mut self.stream {
+            let mut serialized = serde_json::to_vec(&record).unwrap();
+            serialized.push(b'\n');
+            let result = stream.write(&serialized).await;
+            if result.is_err() {
+                self.reconnect().await;
+            }
+        } else {
+            self.reconnect().await;
+        }
+
+        Ok(())
+    }
+
+    async fn reconnect(&mut self) {
+        let addr = self.addr;
+        tokio::time::sleep(Duration::from_millis(100)).await;
+        self.stream = TcpStream::connect(addr).await.ok();
     }
 }

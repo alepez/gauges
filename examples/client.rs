@@ -120,7 +120,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut err = false;
 
-    let mut publisher = Publisher::new("127.0.0.1:9999").await?;
+    let addr: std::net::SocketAddr = "127.0.0.1:9999".parse().unwrap();
+    let mut publisher = Publisher::new(addr).await;
 
     while !err {
         for (&id, generator) in &mut generators {
