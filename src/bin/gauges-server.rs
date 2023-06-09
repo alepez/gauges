@@ -3,7 +3,7 @@ use std::f64::consts::PI;
 use angle::Rad;
 use serde::{Deserialize, Serialize};
 
-use gauges::app::launch_app;
+use gauges::desktop::launch_app;
 use gauges::prelude::*;
 
 const CIRCLE_STYLE: GaugeStyle = GaugeStyle::Circle(CircleGaugeStyle { radius: 50.0 });
