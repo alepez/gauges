@@ -3,6 +3,8 @@ pub mod desktop;
 
 pub mod app;
 pub mod core;
+
+#[cfg(feature = "net")]
 pub mod net;
 
 pub mod prelude {
