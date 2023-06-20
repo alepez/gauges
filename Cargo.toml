@@ -32,6 +32,6 @@ futures-util = "0.3"
 tokio-socketcan = "0.3"
 
 [features]
-default = ["desktop"]
+default = ["desktop", "net"]
 desktop = ["dioxus-desktop", "toml"]
 net = ["tokio", "tokio-stream", "tokio-util"]
