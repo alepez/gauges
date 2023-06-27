@@ -45,12 +45,11 @@ pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
     let signals = &cx.props.signals;
     let items = &cx.props.config.items;
     let show_age_indicator = cx.props.age_indicator;
-    let first = items.first().unwrap();
-    let (item, value, age) = extract_info(signals, first);
 
     cx.render(rsx! {
         div {
             class: "dashboard",
+            for (item, value, age) in items.iter().map(|x| extract_info(signals, x)) {
                 Gauge {
                     value: value
                     signal: item.signal.clone(),
@@ -59,6 +58,7 @@ pub fn Dashboard(cx: Scope<DashboardProps>) -> Element {
                     format: item.format,
                     age: calculate_age(show_age_indicator, age),
                 }
+            }
         }
     })
 }
